@@ -22,7 +22,7 @@ const LinkListItem = ({ link }) => {
 
   return (
     <li className="py-3 pl-[28px] pr-[28px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200">
-      <div className="mr-5">
+      <div className="mr-5 max-w-[70%]">
         <p>{link.title}</p>
         <p className="text-xs text-zinc-500 shorten1">{link.url}</p>
       </div>
