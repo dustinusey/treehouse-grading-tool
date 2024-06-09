@@ -1,0 +1,143 @@
+import { useContext, useState } from "react";
+import { FaRegClipboard, FaRegFileAlt } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa6";
+import { IoIosImages, IoMdOpen } from "react-icons/io";
+import { IoChevronDown } from "react-icons/io5";
+import { LuEye } from "react-icons/lu";
+import { SiReaddotcv } from "react-icons/si";
+import { AppState } from "../../../App";
+
+const ProjectMediaDropdown = () => {
+  const {
+    activeProject,
+    activeProjectMockups,
+    setCurrentMockup,
+    setActiveOverlay,
+    currentStudyGuide,
+  } = useContext(AppState);
+
+  const [openDropdown, setOpenDropdown] = useState(false);
+  const [copyToClipboardAnimation, setCopyToClipboardAnimation] =
+    useState(false);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(currentStudyGuide);
+      setCopyToClipboardAnimation(true);
+      setTimeout(() => {
+        setCopyToClipboardAnimation(false);
+      }, 3000);
+    } catch (err) {
+      alert("Failed to copy: ", err);
+    }
+  };
+  return (
+    <div className="w-full rounded-2xl bg-zinc-950 hover:bg-zinc-900 cursor-pointer duration-200 overflow-hidden">
+      {/* dropdown header */}
+      <div
+        onClick={() => {
+          setOpenDropdown(!openDropdown);
+        }}
+        className="flex items-center justify-betwee px-4 py-4"
+      >
+        <div className="w-[50px] h-[50px] rounded-xl bg-[#F45279] grid place-items-center mr-3 text-2xl">
+          <FaRegFileAlt />
+        </div>
+        <div>
+          <p className="font-bold">Project Media</p>
+          <p className="text-sm opacity-50">Mockups and studyguides</p>
+        </div>
+        <button
+          className={`${
+            openDropdown && "rotate-180"
+          } rounded-lg p-3 duration-200 text-xl ml-auto`}
+        >
+          <IoChevronDown />
+        </button>
+      </div>
+
+      {/* menu */}
+      <ul
+        className={`${
+          openDropdown ? "h-auto" : "h-[0px]"
+        } w-full overflow-hidden`}
+      >
+        {activeProject === null && (
+          <li className="py-5 text-center">No project selected</li>
+        )}
+
+        {activeProject !== null &&
+          activeProjectMockups.length === 0 &&
+          currentStudyGuide === null && (
+            <li className="py-5 text-center">
+              There is no media for this project
+            </li>
+          )}
+
+        {activeProjectMockups.length !== 0 &&
+          activeProjectMockups.map((mock, index) => {
+            return (
+              <li
+                onClick={() => {
+                  setCurrentMockup(mock.mock);
+                  setActiveOverlay(true);
+                }}
+                className="px-8 py-3 pl-[28px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200"
+                key={index}
+              >
+                {mock.mock !== null && (
+                  <p className="flex justify-between items-center w-full">
+                    <span className="text-2xl mr-5">
+                      <IoIosImages />
+                    </span>
+                    {`${mock.title} mockup`}
+                    <button className="ml-auto">
+                      <LuEye />
+                    </button>
+                  </p>
+                )}
+              </li>
+            );
+          })}
+
+        {currentStudyGuide !== null && (
+          <li className="py-3 pl-[28px] pr-[258px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200">
+            {/* study guide icon */}
+            <div className="w-[30px] mr-5 text-2xl">
+              <SiReaddotcv />
+            </div>
+
+            {/* study guide text */}
+            <div className="mr-5 min-w-[185px] w-[185px]">
+              <p>Study Guide</p>
+              <p className="text-xs text-zinc-500 shorten1">
+                {currentStudyGuide}
+              </p>
+            </div>
+
+            {/* list utility icons */}
+            <div className="flex items-center ml-auto gap-4 text-lg text-zinc-300">
+              <button title="copy link address" onClick={copyToClipboard}>
+                {copyToClipboardAnimation ? (
+                  <FaCheck className="text-emerald-500" />
+                ) : (
+                  <FaRegClipboard />
+                )}
+              </button>
+              <a
+                className="text-[20px]"
+                target="_blank"
+                href={currentStudyGuide}
+                title="open link in new window"
+                rel="noopener noreferrer" // Added for security when using target="_blank"
+              >
+                <IoMdOpen />
+              </a>
+            </div>
+          </li>
+        )}
+      </ul>
+    </div>
+  );
+};
+export default ProjectMediaDropdown;

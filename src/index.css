@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.project-view::-webkit-scrollbar {
+    display: none;
+}
+html {
+    scrollbar-width: none; /* for firefox bc they lame af  - update: it still dont work*/
+}
+
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.shorten1 {
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+.shorten2 {
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow:hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+
+.slideInBigDawg {
+    animation: slideInBigDawg .6s .5 ease forwards;
+}
+
+@keyframes slideInBigDawg {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+
+.animateLilBuddy {
+    animation: animateLilBuddy .5s ease-in-out forwards;
+}
+
+@keyframes animateLilBuddy { 
+    0% {
+        height: 0;
+        opacity: 0;
+    }
+    100% {
+        height: 125px;
+        opacity: 1;
+    }
+ }
+
+
+
+ .goodmornightlol {
+    animation: goodmornightlol .4s ease-in-out forwards;
+ }
+
+ @keyframes goodmornightlol {
+    0% {
+        margin-top: 5rem;
+    }
+    100% {
+        margin-top: 0;
+    }
+ }
