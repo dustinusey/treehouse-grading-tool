@@ -27,13 +27,16 @@ const MainSidebar = () => {
     <div
       className={`${
         mainSidebarOpen && "min-w-[400px] w-[400px]"
-      } px-5 text-white`}
+      } px-5 text-white flex flex-col`}
     >
       {/* header */}
       <div className="flex items-center justify-between h-[50px]">
         {mainSidebarOpen && (
-          <div>
-            <h1 className="font-bold text-xl">Treehouse Grading Tool</h1>
+          <div className="relative">
+            <h1 className="font-bold text-xl">
+              Treehouse Grading Tool
+              <span className="lowercase text-blue-400 ml-3 text-sm">BETA</span>
+            </h1>
             <p className="opacity-50 text-sm">
               Choose a Techdegree project to grade
             </p>
@@ -53,7 +56,6 @@ const MainSidebar = () => {
           {mainSidebarOpen ? <IoChevronBack /> : <IoChevronForwardOutline />}
         </button>
       </div>
-
       {/* dropdowns*/}
       {mainSidebarOpen && (
         <div className="mt-5 flex flex-col gap-2">

@@ -20,7 +20,7 @@ const App = () => {
   // main sidebar
   const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
   // review sidebar
-  const [reviewSidebarOpen, setReviewSidebarOpen] = useState(true);
+  const [reviewSidebarOpen, setReviewSidebarOpen] = useState(false);
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
   const [techdegrees, setTechdegrees] = useState([]);
