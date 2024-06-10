@@ -73,24 +73,24 @@ const ReviewSidebar = () => {
 
                   // correct
                   const correct = gradedCorrect.filter(
-                    (item) => !item.isExceeds
+                    (item) => !item.isExceeds,
                   );
                   const correctAndExceeds = gradedCorrect.filter(
-                    (item) => item.isExceeds
+                    (item) => item.isExceeds,
                   );
 
                   // questioned
                   const questioned = gradedQuestioned.filter(
-                    (item) => !item.isExceeds
+                    (item) => !item.isExceeds,
                   );
                   const questionedAndExceeds = gradedQuestioned.filter(
-                    (item) => item.isExceeds
+                    (item) => item.isExceeds,
                   );
 
                   // wrong
                   const wrong = gradedWrong.filter((item) => !item.isExceeds);
                   const wrongAndExceeds = gradedWrong.filter(
-                    (item) => item.isExceeds
+                    (item) => item.isExceeds,
                   );
 
                   // in order of default output
@@ -104,7 +104,7 @@ const ReviewSidebar = () => {
                   questioned.map((item) => {
                     finalGradingReview.current += `:questioned: ${
                       item.title
-                    }\n --- ${item.notes && item.notes}\n`;
+                    }\n> ${item.notes && item.notes}\n`;
                   });
                   finalGradingReview.current += "\n\n\n";
 
@@ -113,7 +113,7 @@ const ReviewSidebar = () => {
                   wrong.map((item) => {
                     finalGradingReview.current += `:needs-work: ${
                       item.title
-                    }\n --- ${item.notes && item.notes}\n`;
+                    }\n> ${item.notes && item.notes}\n`;
                   });
                   finalGradingReview.current += "\n\n\n";
 
@@ -131,7 +131,7 @@ const ReviewSidebar = () => {
                   questionedAndExceeds.map((item) => {
                     finalGradingReview.current += `:questioned: :exceeds: ${
                       item.title
-                    }\n --- ${item.notes && item.notes}\n`;
+                    }\n> ${item.notes && item.notes}\n`;
                   });
 
                   finalGradingReview.current +=
@@ -139,7 +139,7 @@ const ReviewSidebar = () => {
                   wrongAndExceeds.map((item) => {
                     finalGradingReview.current += `:needs-work: :exceeds: ${
                       item.title
-                    }\n --- ${item.notes && item.notes}\n`;
+                    }\n> ${item.notes && item.notes}\n`;
                   });
                   finalGradingReview.current += "\n\n\n";
 
