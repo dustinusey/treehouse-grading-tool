@@ -6,7 +6,7 @@ const ProgressBar = () => {
   return (
     <div className="h-[3px] w-full mx-auto bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden duration-200">
       <div
-        style={{ backgroundColor: activeTechdegree.color }}
+        style={{ backgroundColor: activeTechdegree?.color || "tomato" }}
         className="w-[25%] h-full rounded-full duration-1000"
       ></div>
     </div>

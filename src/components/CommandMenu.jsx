@@ -1,6 +1,4 @@
-import React from "react";
-import { Button } from "./ui/button";
-import { cn } from "../utils";
+import { useState, useEffect, useContext } from "react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -10,13 +8,15 @@ import {
   CommandShortcut,
 } from "./ui/command";
 import { useCommandState } from "cmdk";
+import { AppState } from "../App";
 
 const CommandMenu = () => {
-  const [open, setOpen] = React.useState(false);
-  const [pages, setPages] = React.useState([]);
+  const { projects, techdegrees, setActiveProject } = useContext(AppState);
+  const [open, setOpen] = useState(false);
+  const [pages, setPages] = useState([]);
   const page = pages[pages.length - 1];
 
-  React.useEffect(() => {
+  useEffect(() => {
     const down = (e) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -58,9 +58,17 @@ const CommandMenu = () => {
           {!page && (
             <>
               <CommandItem onSelect={() => setPages([...pages, "techdegrees"])}>
-                Open Techdegree
+                SubItem Example
                 <CommandShortcut>⌘ + N</CommandShortcut>
               </CommandItem>
+              {techdegrees.map((td) => (
+                <CommandItem
+                  key={td.abbr}
+                  onSelect={() => setPages([...pages, td.abbr])}
+                >
+                  {td.name}
+                </CommandItem>
+              ))}
               <CommandItem>Change theme...</CommandItem>
               <SubItem
                 onSelect={() => {
@@ -79,16 +87,36 @@ const CommandMenu = () => {
             </>
           )}
 
-          {page === "techdegrees" && (
+          {page && (
             <>
-              <CommandItem>Front End Web Developement</CommandItem>
-              <CommandItem>Web Development</CommandItem>
-              <CommandItem>FullStack JavaScript</CommandItem>
-              <CommandItem>Python</CommandItem>
-              <CommandItem>Data Analysis</CommandItem>
-              <CommandItem>User Experience Design</CommandItem>
+              {projects?.map((proj) => (
+                <CommandItem
+                  key={proj._id}
+                  onSelect={() => {
+                    setActiveProject(proj);
+                    setOpen(false);
+                  }}
+                >
+                  {proj.title}
+                </CommandItem>
+              ))}
             </>
           )}
+
+          {/*
+          {page === "techdegrees" && (
+            <>
+              {techdegrees.map((td) => (
+                <CommandItem
+                  key={td.abbr}
+                  onSelect={() => setActiveTechdegree(td)}
+                >
+                  {td.name}
+                </CommandItem>
+              ))}
+            </>
+          )}
+          */}
         </CommandList>
       </CommandDialog>
     </>

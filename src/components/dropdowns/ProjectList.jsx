@@ -5,27 +5,8 @@ import { AppState } from "../../App";
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const ProjectList = ({ projects }) => {
-  const {
-    showProjects,
-    activeProjectIndex,
-    setActiveProjectIndex,
-    activeTechdegree,
-    setActiveTechdegree,
-    setShowProjects,
-    activeProject,
-    setActiveProject,
-    activeProjectQuestions,
-    setActiveProjectQuestions,
-    setActiveProjectMockups,
-    setCurrentStudyGuide,
-    setGradedCorrect,
-    setGradedQuestioned,
-    setGradedWrong,
-  } = useContext(AppState);
-
-  async function getActiveProjectData(id) {
-    let SINGLE_PROJECT_QUERY = encodeURIComponent(`
+export async function getActiveProjectData(id) {
+  let SINGLE_PROJECT_QUERY = encodeURIComponent(`
     *[_type == "project" && _id == "${id}"]{
         _id,
         title,
@@ -46,9 +27,31 @@ const ProjectList = ({ projects }) => {
         notes[]->
     }[0]
     `);
-    let SINGLE_PROJECT_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${SINGLE_PROJECT_QUERY}`;
+  let SINGLE_PROJECT_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${SINGLE_PROJECT_QUERY}`;
 
-    let data = await axios.get(SINGLE_PROJECT_URL);
+  return await axios.get(SINGLE_PROJECT_URL);
+}
+const ProjectList = ({ projects }) => {
+  const {
+    showProjects,
+    activeProjectIndex,
+    setActiveProjectIndex,
+    activeTechdegree,
+    setActiveTechdegree,
+    setShowProjects,
+    activeProject,
+    setActiveProject,
+    activeProjectQuestions,
+    setActiveProjectQuestions,
+    setActiveProjectMockups,
+    setCurrentStudyGuide,
+    setGradedCorrect,
+    setGradedQuestioned,
+    setGradedWrong,
+  } = useContext(AppState);
+
+  async function getProjectData(id) {
+    const data = await getActiveProjectData(id);
     setActiveProjectQuestions(data.data.result.gradingSections);
 
     // reset mockup state
@@ -86,7 +89,7 @@ const ProjectList = ({ projects }) => {
   };
 
   useEffect(() => {
-    activeProject !== null && getActiveProjectData(activeProject._id);
+    activeProject !== null && getProjectData(activeProject._id);
   }, [activeProject]);
 
   return (
