@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { FiSun } from "react-icons/fi";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
 import { LuMoonStar } from "react-icons/lu";
@@ -21,7 +21,28 @@ const MainSidebar = () => {
     setActiveTechdegree,
     projects,
     setShowProjects,
+    reviewSidebarOpen,
+    setReviewSidebarOpen,
   } = useContext(AppState);
+
+  const handleSidebarToggles = (event) => {
+    //main sidebar
+    if (event.altKey && event.code === "KeyE") {
+      setMainSidebarOpen(!mainSidebarOpen);
+    }
+    //review sidebar
+    if (event.altKey && event.code === "KeyR") {
+      setReviewSidebarOpen(!reviewSidebarOpen);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleSidebarToggles);
+
+    return () => {
+      window.removeEventListener("keydown", handleSidebarToggles);
+    };
+  }, [mainSidebarOpen, reviewSidebarOpen]);
 
   return (
     <div

@@ -147,6 +147,7 @@ const App = () => {
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">
         {activeOverlay && <Overlay />}
+
         <MainSidebar />
         <ViewContainer />
         <ReviewSidebar />
