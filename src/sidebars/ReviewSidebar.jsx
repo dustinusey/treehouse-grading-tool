@@ -8,6 +8,7 @@ import ReviewItemsQuestioned from "../components/review-items/ReviewItemsQuestio
 import ReviewItemsWrong from "../components/review-items/ReviewItemsWrong";
 
 import { useContext } from "react";
+import CommandMenu from "../components/CommandMenu";
 
 const ReviewSidebar = () => {
   const [copied, setCopied] = useState(false);
@@ -41,6 +42,7 @@ const ReviewSidebar = () => {
         reviewSidebarOpen && "min-w-[450px] w-[450px]"
       } px-5 text-white duration-200`}
     >
+      <CommandMenu />
       <div className="flex items-center justify-between h-[50px]">
         {reviewSidebarOpen && (
           <p className="font-bold text-xl mr-5">Grading Review</p>
@@ -73,24 +75,24 @@ const ReviewSidebar = () => {
 
                   // correct
                   const correct = gradedCorrect.filter(
-                    (item) => !item.isExceeds
+                    (item) => !item.isExceeds,
                   );
                   const correctAndExceeds = gradedCorrect.filter(
-                    (item) => item.isExceeds
+                    (item) => item.isExceeds,
                   );
 
                   // questioned
                   const questioned = gradedQuestioned.filter(
-                    (item) => !item.isExceeds
+                    (item) => !item.isExceeds,
                   );
                   const questionedAndExceeds = gradedQuestioned.filter(
-                    (item) => item.isExceeds
+                    (item) => item.isExceeds,
                   );
 
                   // wrong
                   const wrong = gradedWrong.filter((item) => !item.isExceeds);
                   const wrongAndExceeds = gradedWrong.filter(
-                    (item) => item.isExceeds
+                    (item) => item.isExceeds,
                   );
 
                   // correct header
