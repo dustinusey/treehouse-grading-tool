@@ -104,7 +104,7 @@ const CommandMenu = () => {
                 </CommandItem>
               </CommandGroup>
               {projects
-                .sort((a, b) => {
+                ?.sort((a, b) => {
                   if (a.techdegree.abbr < b.techdegree.abbr) return -1;
                   if (a.techdegree.abbr > b.techdegree.abbr) return 1;
                   return 0;
