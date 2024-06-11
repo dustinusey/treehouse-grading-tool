@@ -22,15 +22,15 @@ const Requirement = ({ req, index }) => {
           <span
             style={
               graded && grade === "correct"
-                ? { backgroundColor: activeTechdegree.color }
+                ? { backgroundColor: activeTechdegree?.color || "tomato" }
                 : {}
             }
             className={`absolute top-1/2 left-[10px] -translate-x-1/2 -translate-y-1/2 mr-5 w-[5px] min-w-[5px] h-[100%] block rounded-xl duration-200 ${
               grade === "questioned"
                 ? "bg-orange-400 dark:bg-orange-300"
                 : grade === "wrong"
-                ? "bg-red-400"
-                : ""
+                  ? "bg-red-400"
+                  : ""
             }`}
           ></span>
         )}

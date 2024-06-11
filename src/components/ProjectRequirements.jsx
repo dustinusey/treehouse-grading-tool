@@ -11,14 +11,16 @@ const ProjectRequirements = () => {
 
   useEffect(() => {
     setQuestions([]);
-    getActiveProjectData(activeProject._id).then((data) =>
-      setActiveProjectQuestions(data.data.result.gradingSections),
-    );
 
-    activeProjectQuestions !== null &&
+    if (activeProjectQuestions !== null) {
       activeProjectQuestions.map((question) => {
         setQuestions((prev) => [...prev, question]);
       });
+    } else {
+      getActiveProjectData(activeProject._id).then((data) =>
+        setActiveProjectQuestions(data.data.result.gradingSections),
+      );
+    }
   }, [activeProjectQuestions]);
 
   return (

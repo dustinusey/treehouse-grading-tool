@@ -53,7 +53,7 @@ const App = () => {
     }
   }, [darkMode]);
 
-  // getting techdegree data
+  // getting techdegree dat  console.log(techdegrees);a
   useEffect(() => {
     async function getTDs() {
       let TDS_QUERY = encodeURIComponent('*[_type == "techdegree"]');
