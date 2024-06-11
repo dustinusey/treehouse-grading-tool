@@ -8,7 +8,7 @@ const ProjectHeader = () => {
   return (
     <div className="">
       <div className="p-5">
-        <h2 className="font-bold text-3xl">{activeProject?.title}</h2>
+        <h2 className="font-bold text-3xl">{activeProject.title}</h2>
         <p>{activeTechdegree?.name} Techdegree</p>
       </div>
       <div className="px-5">

@@ -11,7 +11,8 @@ import { useCommandState } from "cmdk";
 import { AppState } from "../App";
 
 const CommandMenu = () => {
-  const { projects, techdegrees, setActiveProject } = useContext(AppState);
+  const { darkMode, setDarkMode, projects, techdegrees, setActiveProject } =
+    useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
   const page = pages[pages.length - 1];
@@ -57,10 +58,12 @@ const CommandMenu = () => {
           <CommandEmpty>No results found.</CommandEmpty>
           {!page && (
             <>
+              {/*
               <CommandItem onSelect={() => setPages([...pages, "techdegrees"])}>
                 SubItem Example
                 <CommandShortcut>⌘ + N</CommandShortcut>
               </CommandItem>
+              */}
               {techdegrees.map((td) => (
                 <CommandItem
                   key={td.abbr}
@@ -69,54 +72,33 @@ const CommandMenu = () => {
                   {td.name}
                 </CommandItem>
               ))}
-              <CommandItem>Change theme...</CommandItem>
-              <SubItem
+              <CommandItem
                 onSelect={() => {
-                  setOpen(false);
+                  setDarkMode((prevState) => !prevState);
                 }}
               >
-                Change theme to dark
-              </SubItem>
-              <SubItem
-                onSelect={() => {
-                  setOpen(false);
-                }}
-              >
-                Change theme to light
-              </SubItem>
+                Toggle Dark/Light mode
+              </CommandItem>
             </>
           )}
 
           {page && (
             <>
-              {projects?.map((proj) => (
-                <CommandItem
-                  key={proj._id}
-                  onSelect={() => {
-                    setActiveProject(proj);
-                    setOpen(false);
-                  }}
-                >
-                  {proj.title}
-                </CommandItem>
-              ))}
+              {projects
+                ?.filter((proj) => proj.techdegree.abbr === page)
+                .map((proj) => (
+                  <CommandItem
+                    key={proj._id}
+                    onSelect={() => {
+                      setActiveProject(proj);
+                      setOpen(false);
+                    }}
+                  >
+                    {proj.techdegree.abbr} - {proj.projectNumber} : {proj.title}
+                  </CommandItem>
+                ))}
             </>
           )}
-
-          {/*
-          {page === "techdegrees" && (
-            <>
-              {techdegrees.map((td) => (
-                <CommandItem
-                  key={td.abbr}
-                  onSelect={() => setActiveTechdegree(td)}
-                >
-                  {td.name}
-                </CommandItem>
-              ))}
-            </>
-          )}
-          */}
         </CommandList>
       </CommandDialog>
     </>

@@ -75,8 +75,9 @@ const App = () => {
               color,
               name,
               "projects": *[_type == "project" && references(^._id)] | order(projectNumber){
+                  _id,
                   title,
-                  _id
+                  projectNumber,
               },
               resources[]->{
                   title,
@@ -87,26 +88,23 @@ const App = () => {
           `);
       } else {
         PROJECTS_QUERY = encodeURIComponent(`
-          *[_type == "techdegree"]{
+          *[_type == "project" && defined(techdegree)] | order(projectNumber) {
+            _id,
+            title,
+            projectNumber,
+            techdegree-> {
               _id,
-              color,
               name,
-              "projects": *[_type == "project"] | order(projectNumber){
-                  title,
-                  _id
-              },
-              resources[]->{
-                  title,
-                  description,
-                  link
-              }
-          }[0]
-          `);
+              abbr,
+              color
+            }
+          }
+        `);
       }
       let PROJECTS_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${PROJECTS_QUERY}`;
 
       let data = await axios.get(PROJECTS_URL);
-      setProjects(data.data.result.projects);
+      setProjects(data.data.result.projects || data.data.result);
     }
 
     getProjects();

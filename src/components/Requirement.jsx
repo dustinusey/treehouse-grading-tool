@@ -4,7 +4,7 @@ import GradingButtons from "./GradingButtons";
 import Notes from "./Notes";
 
 const Requirement = ({ req, index }) => {
-  const { activeTechdegree } = useContext(AppState);
+  const { activeTechdegree, activeProject } = useContext(AppState);
 
   const [graded, setGraded] = useState(false);
   const [grade, setGrade] = useState(null);
@@ -22,7 +22,10 @@ const Requirement = ({ req, index }) => {
           <span
             style={
               graded && grade === "correct"
-                ? { backgroundColor: activeTechdegree?.color || "tomato" }
+                ? {
+                    backgroundColor:
+                      activeTechdegree?.color || activeProject.techdegree.color,
+                  }
                 : {}
             }
             className={`absolute top-1/2 left-[10px] -translate-x-1/2 -translate-y-1/2 mr-5 w-[5px] min-w-[5px] h-[100%] block rounded-xl duration-200 ${
