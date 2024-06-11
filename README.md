@@ -1,2 +1,2 @@
-# treehouse-grading-tool
-A grading tool for Treehouse informal grading built with React and TailwindCSS (2024)
+# Treehouse Grading Tool (2024)
+[https://grading-tool.netlify.app/](https://grading-tool.netlify.app/)
