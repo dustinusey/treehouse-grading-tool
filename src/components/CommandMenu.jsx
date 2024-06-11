@@ -30,6 +30,16 @@ const CommandMenu = () => {
         e.preventDefault();
         setPages([]);
       }
+      if ((e.metaKey || e.ctrlKey) && e.code === "KeyP") {
+        e.preventDefault();
+        setOpen(true);
+        setPages([...pages, "allProjects"]);
+      }
+      if ((e.metaKey || e.ctrlKey) && e.code === "KeyT") {
+        e.preventDefault();
+        setOpen(true);
+        setPages([...pages, "techdegrees"]);
+      }
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
@@ -40,6 +50,8 @@ const CommandMenu = () => {
     if (!search) return null;
     return <CommandItem {...props} />;
   };
+
+  console.log(page);
 
   return (
     <>
@@ -68,26 +80,20 @@ const CommandMenu = () => {
           <CommandEmpty>No results found.</CommandEmpty>
           {!page && (
             <>
-              {/*
-              <CommandItem onSelect={() => setPages([...pages, "techdegrees"])}>
-                SubItem Example
-                <CommandShortcut>⌘ + N</CommandShortcut>
-              </CommandItem>
-              */}
-              <CommandGroup heading="Techdegrees">
-                {techdegrees.map((td) => (
-                  <CommandItem
-                    key={td.abbr}
-                    onSelect={() => {
-                      setPages([...pages, td.abbr]);
-                      setSearch("");
-                    }}
-                  >
-                    {td.name}
-                  </CommandItem>
-                ))}
+              <CommandGroup heading="Search">
+                <CommandItem
+                  onSelect={() => setPages([...pages, "techdegrees"])}
+                >
+                  Techdegrees...
+                  <CommandShortcut>⌘ + T</CommandShortcut>
+                </CommandItem>
+                <CommandItem
+                  onSelect={() => setPages([...pages, "allProjects"])}
+                >
+                  Projects...
+                  <CommandShortcut>⌘ + P</CommandShortcut>
+                </CommandItem>
               </CommandGroup>
-
               <CommandGroup heading="Settings">
                 <CommandItem
                   onSelect={() => {
@@ -97,13 +103,34 @@ const CommandMenu = () => {
                   Toggle Dark/Light mode
                 </CommandItem>
               </CommandGroup>
+              {projects
+                .sort((a, b) => {
+                  if (a.techdegree.abbr < b.techdegree.abbr) return -1;
+                  if (a.techdegree.abbr > b.techdegree.abbr) return 1;
+                  return 0;
+                })
+                .map((proj) => (
+                  <SubItem
+                    key={proj._id}
+                    onSelect={() => {
+                      setActiveProject(proj);
+                      setOpen(false);
+                    }}
+                  >
+                    {`${proj.techdegree.abbr} - ${proj.projectNumber} : ${proj.title}`}
+                  </SubItem>
+                ))}
             </>
           )}
 
-          {page && (
+          {page === "allProjects" && (
             <>
               {projects
-                ?.filter((proj) => proj.techdegree.abbr === page)
+                .sort((a, b) => {
+                  if (a.techdegree.abbr < b.techdegree.abbr) return -1;
+                  if (a.techdegree.abbr > b.techdegree.abbr) return 1;
+                  return 0;
+                })
                 .map((proj) => (
                   <CommandItem
                     key={proj._id}
@@ -116,6 +143,40 @@ const CommandMenu = () => {
                   </CommandItem>
                 ))}
             </>
+          )}
+
+          {page?.includes("-projects") && (
+            <>
+              {projects
+                ?.filter((proj) => proj.techdegree.abbr === page.split("-")[0])
+                .map((proj) => (
+                  <CommandItem
+                    key={proj._id}
+                    onSelect={() => {
+                      setActiveProject(proj);
+                      setOpen(false);
+                    }}
+                  >
+                    {proj.techdegree.abbr} - {proj.projectNumber} : {proj.title}
+                  </CommandItem>
+                ))}
+            </>
+          )}
+
+          {page === "techdegrees" && (
+            <CommandGroup heading="Techdegrees">
+              {techdegrees.map((td) => (
+                <CommandItem
+                  key={td.abbr}
+                  onSelect={() => {
+                    setPages([...pages, `${td.abbr}-projects`]);
+                    setSearch("");
+                  }}
+                >
+                  {td.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
           )}
         </CommandList>
       </CommandDialog>
