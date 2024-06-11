@@ -4,6 +4,7 @@ import {
   CommandEmpty,
   CommandInput,
   CommandItem,
+  CommandGroup,
   CommandList,
   CommandShortcut,
 } from "./ui/command";
@@ -15,6 +16,7 @@ const CommandMenu = () => {
     useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
+  const [search, setSearch] = useState("");
   const page = pages[pages.length - 1];
 
   useEffect(() => {
@@ -24,7 +26,10 @@ const CommandMenu = () => {
         setPages([]);
         setOpen((open) => !open);
       }
-      if (e.key === "Escape" && pages) setPages([]);
+      if (e.key === "Escape" && pages) {
+        e.preventDefault();
+        setPages([]);
+      }
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
@@ -50,10 +55,15 @@ const CommandMenu = () => {
         open={open}
         onOpenChange={() => {
           setOpen((open) => !open);
+          setSearch("");
           setPages([]);
         }}
       >
-        <CommandInput placeholder="Type a command or search..." />
+        <CommandInput
+          value={search}
+          onValueChange={setSearch}
+          placeholder="Type a command or search..."
+        />
         <CommandList>
           <CommandEmpty>No results found.</CommandEmpty>
           {!page && (
@@ -64,21 +74,29 @@ const CommandMenu = () => {
                 <CommandShortcut>⌘ + N</CommandShortcut>
               </CommandItem>
               */}
-              {techdegrees.map((td) => (
+              <CommandGroup heading="Techdegrees">
+                {techdegrees.map((td) => (
+                  <CommandItem
+                    key={td.abbr}
+                    onSelect={() => {
+                      setPages([...pages, td.abbr]);
+                      setSearch("");
+                    }}
+                  >
+                    {td.name}
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+
+              <CommandGroup heading="Settings">
                 <CommandItem
-                  key={td.abbr}
-                  onSelect={() => setPages([...pages, td.abbr])}
+                  onSelect={() => {
+                    setDarkMode((prevState) => !prevState);
+                  }}
                 >
-                  {td.name}
+                  Toggle Dark/Light mode
                 </CommandItem>
-              ))}
-              <CommandItem
-                onSelect={() => {
-                  setDarkMode((prevState) => !prevState);
-                }}
-              >
-                Toggle Dark/Light mode
-              </CommandItem>
+              </CommandGroup>
             </>
           )}
 
