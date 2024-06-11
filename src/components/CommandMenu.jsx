@@ -12,7 +12,7 @@ import { useCommandState } from "cmdk";
 import { AppState } from "../App";
 
 const CommandMenu = () => {
-  const { darkMode, setDarkMode, projects, techdegrees, setActiveProject } =
+  const { setDarkMode, projects, techdegrees, setActiveProject } =
     useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
@@ -51,8 +51,6 @@ const CommandMenu = () => {
     return <CommandItem {...props} />;
   };
 
-  console.log(page);
-
   return (
     <>
       <button
@@ -82,13 +80,19 @@ const CommandMenu = () => {
             <>
               <CommandGroup heading="Search">
                 <CommandItem
-                  onSelect={() => setPages([...pages, "techdegrees"])}
+                  onSelect={() => {
+                    setPages([...pages, "techdegrees"]);
+                    setSearch("");
+                  }}
                 >
                   Techdegrees...
                   <CommandShortcut>⌘ + T</CommandShortcut>
                 </CommandItem>
                 <CommandItem
-                  onSelect={() => setPages([...pages, "allProjects"])}
+                  onSelect={() => {
+                    setPages([...pages, "allProjects"]);
+                    setSearch("");
+                  }}
                 >
                   Projects...
                   <CommandShortcut>⌘ + P</CommandShortcut>
@@ -115,6 +119,7 @@ const CommandMenu = () => {
                     onSelect={() => {
                       setActiveProject(proj);
                       setOpen(false);
+                      setSearch("");
                     }}
                   >
                     {`${proj.techdegree.abbr} - ${proj.projectNumber} : ${proj.title}`}
@@ -137,6 +142,7 @@ const CommandMenu = () => {
                     onSelect={() => {
                       setActiveProject(proj);
                       setOpen(false);
+                      setSearch("");
                     }}
                   >
                     {proj.techdegree.abbr} - {proj.projectNumber} : {proj.title}
@@ -155,6 +161,7 @@ const CommandMenu = () => {
                     onSelect={() => {
                       setActiveProject(proj);
                       setOpen(false);
+                      setSearch("");
                     }}
                   >
                     {proj.techdegree.abbr} - {proj.projectNumber} : {proj.title}
