@@ -24,6 +24,8 @@ const CommandMenu = ({ copyToClipboard }) => {
   const [search, setSearch] = useState("");
   const page = pages[pages.length - 1];
 
+  console.log("this is being rendered");
+
   useEffect(() => {
     const down = (e) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -56,6 +58,10 @@ const CommandMenu = ({ copyToClipboard }) => {
         } else if (open && pages[0] === "techdegrees") {
           setOpen(false);
         }
+      }
+      if ((e.metaKey || e.ctrlKey) && e.code === "KeyC") {
+        e.preventDefault();
+        copyToClipboard();
       }
     };
     document.addEventListener("keydown", down);
