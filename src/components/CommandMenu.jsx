@@ -11,9 +11,14 @@ import {
 import { useCommandState } from "cmdk";
 import { AppState } from "../App";
 
-const CommandMenu = () => {
-  const { setDarkMode, projects, techdegrees, setActiveProject } =
-    useContext(AppState);
+const CommandMenu = ({ copyToClipboard }) => {
+  const {
+    setDarkMode,
+    projects,
+    techdegrees,
+    activeProject,
+    setActiveProject,
+  } = useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
   const [search, setSearch] = useState("");
@@ -26,24 +31,36 @@ const CommandMenu = () => {
         setPages([]);
         setOpen((open) => !open);
       }
-      if (e.key === "Escape" && pages) {
+      if (e.key === "Escape" || (e.key === "Backspace" && !search)) {
         e.preventDefault();
-        setPages([]);
+        setPages((pages) => pages.slice(0, -1));
       }
       if ((e.metaKey || e.ctrlKey) && e.code === "KeyP") {
         e.preventDefault();
-        setOpen(true);
-        setPages([...pages, "allProjects"]);
+        if (!open) {
+          setOpen(true);
+          setPages(["allProjects"]);
+        } else if (open && pages[0] !== "allProjects") {
+          setPages(["allProjects"]);
+        } else if (open && pages[0] === "allProjects") {
+          setOpen(false);
+        }
       }
       if ((e.metaKey || e.ctrlKey) && e.code === "KeyT") {
         e.preventDefault();
-        setOpen(true);
-        setPages([...pages, "techdegrees"]);
+        if (!open) {
+          setOpen(true);
+          setPages(["techdegrees"]);
+        } else if (open && pages[0] !== "techdegrees") {
+          setPages(["techdegrees"]);
+        } else if (open && pages[0] === "techdegrees") {
+          setOpen(false);
+        }
       }
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, []);
+  }, [open, pages]);
 
   const SubItem = (props) => {
     const search = useCommandState((state) => state.search);
@@ -86,7 +103,7 @@ const CommandMenu = () => {
                   }}
                 >
                   Techdegrees...
-                  <CommandShortcut>⌘ + T</CommandShortcut>
+                  <CommandShortcut>⌃ + T</CommandShortcut>
                 </CommandItem>
                 <CommandItem
                   onSelect={() => {
@@ -95,10 +112,22 @@ const CommandMenu = () => {
                   }}
                 >
                   Projects...
-                  <CommandShortcut>⌘ + P</CommandShortcut>
+                  <CommandShortcut>⌃ + P</CommandShortcut>
                 </CommandItem>
               </CommandGroup>
-              <CommandGroup heading="Settings">
+              <CommandGroup heading="Shortcuts">
+                {activeProject && (
+                  <CommandItem
+                    onSelect={() => {
+                      copyToClipboard();
+                      setOpen(false);
+                    }}
+                  >
+                    Copy Review
+                    <CommandShortcut>⌃ + C</CommandShortcut>
+                  </CommandItem>
+                )}
+
                 <CommandItem
                   onSelect={() => {
                     setDarkMode((prevState) => !prevState);

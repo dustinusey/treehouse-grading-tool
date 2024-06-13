@@ -20,9 +20,11 @@ const ReviewSidebar = () => {
     gradedWrong,
     finalGradingReview,
     activeTechdegree,
+    activeProject,
   } = useContext(AppState);
 
   const copyToClipboard = async () => {
+    generateFinalReview();
     if (!finalGradingReview || !finalGradingReview.current) {
       console.error("No data to copy");
       return;
@@ -36,13 +38,108 @@ const ReviewSidebar = () => {
     }
   };
 
+  const generateFinalReview = () => {
+    // future todo: filter options. prob in 2065 if time allows
+    // resets review on "copy review" click
+    finalGradingReview.current = "";
+
+    // correct
+    const correct = gradedCorrect.filter((item) => !item.isExceeds);
+    const correctAndExceeds = gradedCorrect.filter((item) => item.isExceeds);
+
+    // questioned
+    const questioned = gradedQuestioned.filter((item) => !item.isExceeds);
+    const questionedAndExceeds = gradedQuestioned.filter(
+      (item) => item.isExceeds,
+    );
+
+    // wrong
+    const wrong = gradedWrong.filter((item) => !item.isExceeds);
+    const wrongAndExceeds = gradedWrong.filter((item) => item.isExceeds);
+
+    // correct header
+    if (correct.length !== 0) {
+      finalGradingReview.current += "You got these right:\n\n";
+      // correct meets output
+      correct.map((item) => {
+        finalGradingReview.current += `:meets: ${item.title}\n`;
+      });
+      finalGradingReview.current += "\n\n\n";
+    }
+
+    // questioned header
+    if (questioned.length !== 0) {
+      finalGradingReview.current += "These need review:\n\n";
+      // questioned output
+      questioned.map((item) => {
+        finalGradingReview.current += `:questioned: ${item.title}\n ${
+          item.notes !== undefined ? `> ${item.notes}` : ""
+        }\n`;
+      });
+      finalGradingReview.current += "\n\n\n";
+    }
+
+    if (wrong.length !== 0) {
+      finalGradingReview.current +=
+        "You'll need to go back and rework these:\n\n";
+      // wrong output
+      wrong.map((item) => {
+        finalGradingReview.current += `:needs-work: ${item.title}\n ${
+          item.notes !== undefined ? `> ${item.notes}` : ""
+        }\n`;
+      });
+      finalGradingReview.current += "\n\n\n";
+    }
+
+    // exceeds
+
+    if (
+      correctAndExceeds.length !== 0 ||
+      questionedAndExceeds.length !== 0 ||
+      wrongAndExceeds.length !== 0
+    ) {
+      finalGradingReview.current += "EXCEEDS EXPECTATIONS REQUIREMENTS:\n\n\n";
+    }
+
+    if (correctAndExceeds.length !== 0) {
+      finalGradingReview.current +=
+        "You got these Exceeds requirements right:\n\n";
+      correctAndExceeds.map((item) => {
+        finalGradingReview.current += `:meets: :exceeds: EXCEEDS: ${item.title}\n`;
+        finalGradingReview.current += "\n\n\n";
+      });
+    }
+
+    if (questionedAndExceeds.length !== 0) {
+      finalGradingReview.current +=
+        "These Exceeds requirements need review:\n\n";
+      questionedAndExceeds.map((item) => {
+        finalGradingReview.current += `:questioned: :exceeds: ${item.title}\n ${
+          item.notes !== undefined ? `> ${item.notes}` : ""
+        }\n`;
+      });
+      finalGradingReview.current += "\n\n\n";
+    }
+
+    if (wrongAndExceeds.length !== 0) {
+      finalGradingReview.current +=
+        "These Exceeds requirements need some work:\n\n";
+      wrongAndExceeds.map((item) => {
+        finalGradingReview.current += `:needs-work: :exceeds: ${item.title}\n ${
+          item.notes !== undefined ? `> ${item.notes}` : ""
+        }\n`;
+      });
+      finalGradingReview.current += "\n\n\n";
+    }
+  };
+
   return (
     <div
       className={`${
         reviewSidebarOpen && "min-w-[450px] w-[450px]"
       } px-5 text-white duration-200`}
     >
-      <CommandMenu />
+      <CommandMenu copyToClipboard={copyToClipboard} />
       <div className="flex items-center justify-between h-[50px]">
         {reviewSidebarOpen && (
           <p className="font-bold text-xl mr-5">Grading Review</p>
@@ -68,117 +165,6 @@ const ReviewSidebar = () => {
               <button
                 onClick={() => {
                   setCopied(true);
-
-                  // future todo: filter options. prob in 2065 if time allows
-                  // resets review on "copy review" click
-                  finalGradingReview.current = "";
-
-                  // correct
-                  const correct = gradedCorrect.filter(
-                    (item) => !item.isExceeds,
-                  );
-                  const correctAndExceeds = gradedCorrect.filter(
-                    (item) => item.isExceeds,
-                  );
-
-                  // questioned
-                  const questioned = gradedQuestioned.filter(
-                    (item) => !item.isExceeds,
-                  );
-                  const questionedAndExceeds = gradedQuestioned.filter(
-                    (item) => item.isExceeds,
-                  );
-
-                  // wrong
-                  const wrong = gradedWrong.filter((item) => !item.isExceeds);
-                  const wrongAndExceeds = gradedWrong.filter(
-                    (item) => item.isExceeds,
-                  );
-
-                  // correct header
-                  if (correct.length !== 0) {
-                    finalGradingReview.current += "You got these right:\n\n";
-                    // correct meets output
-                    correct.map((item) => {
-                      finalGradingReview.current += `:meets: ${item.title}\n`;
-                    });
-                    finalGradingReview.current += "\n\n\n";
-                  }
-
-                  // questioned header
-                  if (questioned.length !== 0) {
-                    finalGradingReview.current += "These need review:\n\n";
-                    // questioned output
-                    questioned.map((item) => {
-                      finalGradingReview.current += `:questioned: ${
-                        item.title
-                      }\n ${
-                        item.notes !== undefined ? `> ${item.notes}` : ""
-                      }\n`;
-                    });
-                    finalGradingReview.current += "\n\n\n";
-                  }
-
-                  if (wrong.length !== 0) {
-                    finalGradingReview.current +=
-                      "You'll need to go back and rework these:\n\n";
-                    // wrong output
-                    wrong.map((item) => {
-                      finalGradingReview.current += `:needs-work: ${
-                        item.title
-                      }\n ${
-                        item.notes !== undefined ? `> ${item.notes}` : ""
-                      }\n`;
-                    });
-                    finalGradingReview.current += "\n\n\n";
-                  }
-
-                  // exceeds
-
-                  if (
-                    correctAndExceeds.length !== 0 ||
-                    questionedAndExceeds.length !== 0 ||
-                    wrongAndExceeds.length !== 0
-                  ) {
-                    finalGradingReview.current +=
-                      "EXCEEDS EXPECTATIONS REQUIREMENTS:\n\n\n";
-                  }
-
-                  if (correctAndExceeds.length !== 0) {
-                    finalGradingReview.current +=
-                      "You got these Exceeds requirements right:\n\n";
-                    correctAndExceeds.map((item) => {
-                      finalGradingReview.current += `:meets: :exceeds: EXCEEDS: ${item.title}\n`;
-                      finalGradingReview.current += "\n\n\n";
-                    });
-                  }
-
-                  if (questionedAndExceeds.length !== 0) {
-                    finalGradingReview.current +=
-                      "These Exceeds requirements need review:\n\n";
-                    questionedAndExceeds.map((item) => {
-                      finalGradingReview.current += `:questioned: :exceeds: ${
-                        item.title
-                      }\n ${
-                        item.notes !== undefined ? `> ${item.notes}` : ""
-                      }\n`;
-                    });
-                    finalGradingReview.current += "\n\n\n";
-                  }
-
-                  if (wrongAndExceeds.length !== 0) {
-                    finalGradingReview.current +=
-                      "These Exceeds requirements need some work:\n\n";
-                    wrongAndExceeds.map((item) => {
-                      finalGradingReview.current += `:needs-work: :exceeds: ${
-                        item.title
-                      }\n ${
-                        item.notes !== undefined ? `> ${item.notes}` : ""
-                      }\n`;
-                    });
-                    finalGradingReview.current += "\n\n\n";
-                  }
-
                   // copy contents of setfinalgradingreview to clipboard as text
                   copyToClipboard();
                   setTimeout(() => {
@@ -186,7 +172,13 @@ const ReviewSidebar = () => {
                   }, 2500);
                 }}
                 style={
-                  copied ? { backgroundColor: activeTechdegree.color } : {}
+                  copied
+                    ? {
+                        backgroundColor:
+                          activeTechdegree.color ||
+                          activeProject.techdegree.color,
+                      }
+                    : {}
                 }
                 className="w-full p-4 text-center bg-zinc-700 rounded-lg hover:bg-zinc-600 duration-200"
               >

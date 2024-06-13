@@ -78,6 +78,12 @@ const App = () => {
                   _id,
                   title,
                   projectNumber,
+                  techdegree-> {
+                      _id,
+                      name,
+                      abbr,
+                      color
+                  },
               },
               resources[]->{
                   title,
