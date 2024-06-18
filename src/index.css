@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.project-view::-webkit-scrollbar {
+.project-view::-webkit-scrollbar,
+.review-sidebar::-webkit-scrollbar {
     display: none;
 }
 html {

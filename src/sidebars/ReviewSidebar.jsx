@@ -58,7 +58,7 @@ const ReviewSidebar = () => {
       </div>
 
       {reviewSidebarOpen && (
-        <div className="h-[92%] overflow-auto mt-10 pr-5">
+        <div className="h-[92%] overflow-auto mt-10 pr-5 review-sidebar">
           {gradedCorrect.length !== 0 ||
           gradedQuestioned.length !== 0 ||
           gradedWrong.length !== 0 ? (
