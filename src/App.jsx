@@ -59,7 +59,6 @@ const App = () => {
   // toggles grading review sidebar and main sidebar upon completion of grading
   useEffect(() => {
     if ((answeredCount / allQuestions.current.length) * 100 >= 100) {
-      setMainSidebarOpen(false);
       setReviewSidebarOpen(true);
     }
   }, [answeredCount]);
