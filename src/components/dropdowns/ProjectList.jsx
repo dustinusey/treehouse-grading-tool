@@ -22,6 +22,7 @@ const ProjectList = ({ projects }) => {
     setGradedCorrect,
     setGradedQuestioned,
     setGradedWrong,
+    setAnsweredCount,
   } = useContext(AppState);
 
   async function getActiveProjectData(id) {
@@ -117,6 +118,7 @@ const ProjectList = ({ projects }) => {
                 } ${itemClassNames}`}
                 key={index}
                 onClick={() => {
+                  setAnsweredCount(0);
                   setActiveProject(null);
                   setActiveProjectIndex(null);
                   setActiveProjectQuestions(null);

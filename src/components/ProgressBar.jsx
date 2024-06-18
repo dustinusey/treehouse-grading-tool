@@ -2,12 +2,22 @@ import { useContext } from "react";
 import { AppState } from "../App";
 
 const ProgressBar = () => {
-  const { activeTechdegree } = useContext(AppState);
+  const { activeTechdegree, allQuestions, answeredCount } =
+    useContext(AppState);
+
+  const width =
+    answeredCount === 0
+      ? 0
+      : (answeredCount / allQuestions.current.length) * 100;
+
   return (
     <div className="h-[3px] w-full mx-auto bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden duration-200">
       <div
-        style={{ backgroundColor: activeTechdegree.color }}
-        className="w-[25%] h-full rounded-full duration-1000"
+        style={{
+          backgroundColor: activeTechdegree.color,
+          width: `${width}%`,
+        }}
+        className="h-full rounded-full duration-1000"
       ></div>
     </div>
   );

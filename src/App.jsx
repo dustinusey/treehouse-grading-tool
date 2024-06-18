@@ -42,6 +42,27 @@ const App = () => {
   const [gradedQuestioned, setGradedQuestioned] = useState([]);
   const [gradedWrong, setGradedWrong] = useState([]);
   const finalGradingReview = useRef("");
+  // progress bar
+  const allQuestions = useRef([]);
+  const [answeredCount, setAnsweredCount] = useState(0);
+  // getting all current projects questions
+  useEffect(() => {
+    allQuestions.current = [];
+    activeProjectQuestions !== null &&
+      activeProjectQuestions.forEach((question) => {
+        question.requirements.forEach((requirement) => {
+          allQuestions.current.push(requirement);
+        });
+      });
+  }, [activeProjectQuestions]);
+
+  // toggles grading review sidebar and main sidebar upon completion of grading
+  useEffect(() => {
+    if ((answeredCount / allQuestions.current.length) * 100 >= 100) {
+      setMainSidebarOpen(false);
+      setReviewSidebarOpen(true);
+    }
+  }, [answeredCount]);
 
   // grabbing dark theme from localstorage
   useEffect(() => {
@@ -143,6 +164,10 @@ const App = () => {
         gradedWrong,
         setGradedWrong,
         finalGradingReview,
+        // progress bar
+        allQuestions,
+        answeredCount,
+        setAnsweredCount,
       }}
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">

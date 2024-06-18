@@ -6,8 +6,12 @@ import { FaCheck, FaQuestion } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
 const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
-  const { setGradedCorrect, setGradedQuestioned, setGradedWrong } =
-    useContext(AppState);
+  const {
+    setGradedCorrect,
+    setGradedQuestioned,
+    setGradedWrong,
+    setAnsweredCount,
+  } = useContext(AppState);
 
   const buttonStyles =
     "size-[50px] rounded-xl border-2 border-zinc-200 dark:border-zinc-900 grid place-items-center bg-white hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-200 cursor-pointer";
@@ -16,6 +20,7 @@ const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
     <ul className="my-3 flex items-center gap-2">
       <li
         onClick={() => {
+          setAnsweredCount((prev) => prev + 1);
           setGraded(true);
           setGrade("correct");
           setGradedCorrect((prev) => {
@@ -35,6 +40,7 @@ const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
       </li>
       <li
         onClick={() => {
+          setAnsweredCount((prev) => prev + 1);
           setGraded(true);
           setShowNotes(true);
           setTimeout(() => {
@@ -57,6 +63,7 @@ const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
       </li>
       <li
         onClick={() => {
+          setAnsweredCount((prev) => prev + 1);
           setGraded(true);
           setShowNotes(true);
           setTimeout(() => {
@@ -80,6 +87,7 @@ const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
       </li>
       <li
         onClick={() => {
+          setAnsweredCount((prev) => prev - 1);
           // Set graded to true to indicate an item has been graded
           setGraded(false);
           setGrade(null);
@@ -98,7 +106,7 @@ const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
           // Update gradedWrong by filtering out the item with the matching ID
           setGradedWrong((prev) => prev.filter((item) => item.id !== req._id));
         }}
-        className={buttonStyles}
+        className={`${!graded ? "disabled" : ""} ${buttonStyles}`}
       >
         <FaRedo />
       </li>

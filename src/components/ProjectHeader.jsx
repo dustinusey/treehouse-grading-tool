@@ -3,7 +3,8 @@ import { AppState } from "../App";
 import ProgressBar from "./ProgressBar";
 
 const ProjectHeader = () => {
-  const { activeProject, activeTechdegree } = useContext(AppState);
+  const { activeProject, activeTechdegree, allQuestions } =
+    useContext(AppState);
 
   return (
     <div className="">
