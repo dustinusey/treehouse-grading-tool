@@ -42,6 +42,7 @@ const App = () => {
   const [gradedQuestioned, setGradedQuestioned] = useState([]);
   const [gradedWrong, setGradedWrong] = useState([]);
   const finalGradingReview = useRef("");
+  const [excludeExceeds, setExcludeExceeds] = useState(false);
   // progress bar
   const allQuestions = useRef([]);
   const [answeredCount, setAnsweredCount] = useState(0);
@@ -163,6 +164,8 @@ const App = () => {
         gradedWrong,
         setGradedWrong,
         finalGradingReview,
+        excludeExceeds,
+        setExcludeExceeds,
         // progress bar
         allQuestions,
         answeredCount,
@@ -171,7 +174,6 @@ const App = () => {
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">
         {activeOverlay && <Overlay />}
-
         <MainSidebar />
         <ViewContainer />
         <ReviewSidebar />

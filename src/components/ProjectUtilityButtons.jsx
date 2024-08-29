@@ -1,10 +1,27 @@
+import { useContext } from "react";
+import { AppState } from "../App";
+
 const ProjectUtilityButtons = () => {
-  const buttonClasses =
-    "bg-zinc-100 hover:bg-zinc-200 dark:bg-black dark:bg-opacity-20 dark:text-zinc-200 dark:hover:bg-zinc-900 duration-200 rounded-lg px-5 py-4";
+  const { excludeExceeds, setExcludeExceeds, activeTechdegree } =
+    useContext(AppState);
+
   return (
     <div className="px-5 py-8 flex items-center gap-2">
-      <button className={buttonClasses}>Mark all correct</button>
-      <button className={buttonClasses}>Exclude Exceeds</button>
+      <div className="flex items-center gap-5 ml-5 py-3 cursor-pointer">
+        <input
+          id="excludeExceeds"
+          type="checkbox"
+          onChange={() => {
+            setExcludeExceeds(!excludeExceeds);
+          }}
+          className={`toggle-switch bg-zinc-200 dark:bg-zinc-400 checked:bg-emerald-500 cursor-pointer`}
+          Exclude
+          Exceeds
+        />
+        <label htmlFor="excludeExceeds" className="cursor-pointer">
+          Exclude Exceeds
+        </label>
+      </div>
     </div>
   );
 };

@@ -11,6 +11,36 @@ html {
 }
 
 
+
+/* toggle switches */
+input.toggle-switch {
+    appearance: none;
+    position: relative;
+    width: 50px;
+    height: 30px;
+    border-radius: 25px;
+    transition: backgroudn .3s ease;
+    outline: none;
+}
+
+input.toggle-switch::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    height: 1.25rem;
+    width: 1.25rem;
+    background-color: white;
+    transition: left .3s ease;   
+}
+
+input.toggle-switch:checked::before {
+    left: 70%;
+}
+
+
 .disabled {
     opacity: 0.5;
     pointer-events: none;
