@@ -54,10 +54,7 @@ const MainSidebar = () => {
       <div className="flex items-center justify-between h-[50px]">
         {mainSidebarOpen && (
           <div className="relative">
-            <h1 className="font-bold text-xl">
-              Treehouse Grading Tool
-              <span className="lowercase text-blue-400 ml-3 text-sm">BETA</span>
-            </h1>
+            <h1 className="font-bold text-xl">Treehouse Grading Tool</h1>
             <p className="opacity-50 text-sm">
               Choose a Techdegree project to grade
             </p>
