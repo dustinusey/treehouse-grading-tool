@@ -19,6 +19,7 @@ const MainSidebar = () => {
     showProjects,
     activeProject,
     setActiveTechdegree,
+    activeTechdegree,
     projects,
     setShowProjects,
     reviewSidebarOpen,
@@ -66,6 +67,8 @@ const MainSidebar = () => {
             setMainSidebarOpen(!mainSidebarOpen);
             setShowProjects(false);
             activeProject === null && setActiveTechdegree(null);
+            activeProject !== null &&
+              setActiveTechdegree(activeTechdegree, setShowProjects(true));
           }}
           className={`${
             !mainSidebarOpen ? "rounded-lg" : "ml-auto rounded-full"
