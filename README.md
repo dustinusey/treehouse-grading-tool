@@ -44,12 +44,6 @@ To set up the project locally:
 
 If you encounter any issues or have questions, please file an issue on our [GitHub issue tracker](https://github.com/your-username/treehouse-grading-tool/issues).
 
-## Roadmap
-
-- Integration with Treehouse's learning management system
-- AI-assisted grading suggestions
-- Peer review functionality
-
 ---
 
 Built with ❤️ by Dustin, Brian and Rohald
