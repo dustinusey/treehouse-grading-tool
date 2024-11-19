@@ -25,7 +25,6 @@ const App = () => {
   const [techdegreesLoaded, setTechdegreesLoaded] = useState(false);
   // projects
   const [allProjects, setAllProjects] = useState(null); // NEW FOR TESTING (TA)
-  const [showProjects, setShowProjects] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
   // active project list items in sidebar
   const [activeProjectIndex, setActiveProjectIndex] = useState(null);
@@ -118,7 +117,6 @@ const App = () => {
       try {
         const response = await axios.get(ALL_DATA_URL);
         const result = response.data.result;
-        // setTechdegrees(result); /* COMMENTED OUT FOR TESTING */
 
         // Store all TD Data
         setAllTechdegrees(result);
@@ -163,8 +161,6 @@ const App = () => {
         setActiveTechdegree,
         // projects
         allProjects,
-        showProjects,
-        setShowProjects,
         activeProject,
         setActiveProject,
         // active project list items

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import { AppState } from "../../../App";
+import { SidebarContext } from "../../../sidebars/MainSidebar";
 
 import LoadingItem from "../LoadingItem";
 import TechdegreeListItem from "./TechdegreeListItem";
@@ -10,13 +11,15 @@ const TechdegreeDropdown = () => {
     logo,
     allTechdegrees,
     activeTechdegree,
-    setShowProjects,
+    // setShowProjects,
     setActiveProjectIndex,
     activeProject,
     setActiveProject,
     setActiveProjectMockups,
     setCurrentStudyGuide,
   } = useContext(AppState);
+
+  const { setShowProjects } = useContext(SidebarContext);
 
   const [openDropdown, setOpenDropdown] = useState(false);
 

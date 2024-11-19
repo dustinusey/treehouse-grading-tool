@@ -1,8 +1,12 @@
 import { useContext } from "react";
 import { AppState } from "../../../App";
+import { SidebarContext } from "../../../sidebars/MainSidebar";
 
 const TechdegreeListItem = ({ td, color, title, setOpenDropdown }) => {
-  const { logo, setActiveTechdegree, setShowProjects } = useContext(AppState);
+  const { logo, setActiveTechdegree } = useContext(AppState);
+
+  const { setShowProjects } = useContext(SidebarContext);
+
   return (
     <li
       onClick={() => {
