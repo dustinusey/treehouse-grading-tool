@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FiSun } from "react-icons/fi";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
 import { LuMoonStar } from "react-icons/lu";
@@ -10,8 +10,6 @@ import LinksDropdown from "../components/dropdowns/links/LinksDropdown";
 import ProjectMediaDropdown from "../components/dropdowns/project-media/ProjectMediaDropdown";
 import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDropdown";
 
-export const SidebarContext = createContext();
-
 const MainSidebar = () => {
   const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
@@ -22,18 +20,11 @@ const MainSidebar = () => {
     activeProject,
     setActiveTechdegree,
     activeTechdegree,
-    reviewSidebarOpen,
-    setReviewSidebarOpen,
   } = useContext(AppState);
 
   const handleSidebarToggles = (event) => {
-    //main sidebar
     if (event.altKey && event.code === "KeyE") {
       setMainSidebarOpen(!mainSidebarOpen);
-    }
-    //review sidebar
-    if (event.altKey && event.code === "KeyR") {
-      setReviewSidebarOpen(!reviewSidebarOpen);
     }
   };
 
@@ -80,11 +71,11 @@ const MainSidebar = () => {
       {/* dropdowns*/}
       {mainSidebarOpen && (
         <div className="mt-5 flex flex-col gap-2">
-          <SidebarContext.Provider value={{ showProjects, setShowProjects }}>
-            <TechdegreeDropdown setShowProjects={setShowProjects} />
+          <TechdegreeDropdown setShowProjects={setShowProjects} />
 
-            {showProjects && activeTechdegree && <ProjectList />}
-          </SidebarContext.Provider>
+          {showProjects && activeTechdegree && (
+            <ProjectList setShowProjects={setShowProjects} />
+          )}
 
           <LinksDropdown />
           <ProjectMediaDropdown />

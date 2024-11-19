@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaListCheck } from "react-icons/fa6";
 import { IoCloseSharp } from "react-icons/io5";
 import { AppState } from "../App";
@@ -11,14 +11,15 @@ import { useContext } from "react";
 
 const ReviewSidebar = () => {
   const [copied, setCopied] = useState(false);
+
   const {
-    reviewSidebarOpen,
-    setReviewSidebarOpen,
     gradedCorrect,
     gradedQuestioned,
     gradedWrong,
     finalGradingReview,
     activeTechdegree,
+    reviewSidebarOpen,
+    setReviewSidebarOpen,
   } = useContext(AppState);
 
   const copyToClipboard = async () => {
@@ -34,6 +35,20 @@ const ReviewSidebar = () => {
       console.error("Failed to copy: ", error);
     }
   };
+
+  const handleSidebarToggles = (event) => {
+    if (event.altKey && event.code === "KeyR") {
+      setReviewSidebarOpen(!reviewSidebarOpen);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleSidebarToggles);
+
+    return () => {
+      window.removeEventListener("keydown", handleSidebarToggles);
+    };
+  }, [handleSidebarToggles]);
 
   return (
     <div

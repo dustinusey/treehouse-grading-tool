@@ -1,11 +1,10 @@
 import { useContext, useEffect } from "react";
 import { AppState } from "../../App";
-import { SidebarContext } from "../../sidebars/MainSidebar";
 
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const ProjectList = () => {
+const ProjectList = ({ setShowProjects }) => {
   const {
     activeProjectIndex,
     setActiveProjectIndex,
@@ -21,8 +20,6 @@ const ProjectList = () => {
     setGradedWrong,
     setAnsweredCount,
   } = useContext(AppState);
-
-  const { setShowProjects } = useContext(SidebarContext);
 
   async function getActiveProjectData(project) {
     setActiveProjectQuestions(project.gradingSections);

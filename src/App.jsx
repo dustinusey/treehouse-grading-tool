@@ -6,8 +6,6 @@ import MainSidebar from "./sidebars/MainSidebar";
 import ReviewSidebar from "./sidebars/ReviewSidebar";
 import ViewContainer from "./views/ViewContainer";
 
-import logo from "./assets/thlogo.png";
-
 // app state
 export const AppState = createContext();
 
@@ -20,7 +18,6 @@ const App = () => {
   const [reviewSidebarOpen, setReviewSidebarOpen] = useState(false);
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
-  const [techdegrees, setTechdegrees] = useState([]);
   const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
   const [techdegreesLoaded, setTechdegreesLoaded] = useState(false);
   // projects
@@ -146,15 +143,11 @@ const App = () => {
         // theme
         darkMode,
         setDarkMode,
-        // th logo
-        logo,
         // review sidebar
         reviewSidebarOpen,
         setReviewSidebarOpen,
         // techdgrees & loading
-        techdegrees,
         allTechdegrees,
-        setTechdegrees,
         techdegreesLoaded,
         setTechdegreesLoaded,
         activeTechdegree,
