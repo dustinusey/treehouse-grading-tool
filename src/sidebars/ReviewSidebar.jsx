@@ -95,9 +95,6 @@ const ReviewSidebar = () => {
 
                   // Correct Output
                   if (correct.length || correctAndExceeds.length) {
-                    // correct header
-                    finalGradingReview.current += "*You got these right:*\n\n";
-
                     // correct meets output
                     if (correct.length) {
                       correct.forEach((item) => {
@@ -105,7 +102,7 @@ const ReviewSidebar = () => {
                       });
                     }
 
-                    // exceeds meets output
+                    // Exceeds meets output
                     if (correctAndExceeds.length) {
                       correctAndExceeds.forEach((item) => {
                         finalGradingReview.current += `:meets: :exceeds: *EXCEEDS:* ${item.title}\n`;
@@ -115,13 +112,13 @@ const ReviewSidebar = () => {
                     finalGradingReview.current += "\n\n\n";
                   }
 
-                  // Questioned Output
-                  if (questioned.length || questionedAndExceeds.length) {
-                    // questioned header
+                  // Meets Questioned & Needs Output
+                  if (questioned.length || wrong.length) {
+                    // Meets header
                     finalGradingReview.current +=
-                      "*These may need some adjustments:*\n\n";
+                      "*These will need some work for Meets:*\n\n";
 
-                    // questioned output
+                    // Questioned output
                     if (questioned.length) {
                       questioned.forEach((item) => {
                         finalGradingReview.current += `:questioned: ${
@@ -130,28 +127,29 @@ const ReviewSidebar = () => {
                       });
                     }
 
-                    // questioned exceeds output
-                    if (questionedAndExceeds.length) {
-                      questionedAndExceeds.forEach((item) => {
-                        finalGradingReview.current += `:questioned: :exceeds: *EXCEEDS:* ${
+                    // Wrong output
+                    if (wrong.length) {
+                      wrong.forEach((item) => {
+                        finalGradingReview.current += `:needs-work: ${
                           item.title
                         }\n${item.notes ? `> ${item.notes}\n\n` : ""}`;
                       });
                     }
+
                     // gap
                     finalGradingReview.current += "\n\n\n";
                   }
 
-                  // Wrong Output
-                  if (wrong.length || wrongAndExceeds.length) {
-                    // wrong header
+                  // Exceeds Questioned & Needs Output
+                  if (questionedAndExceeds.length || wrongAndExceeds.length) {
+                    // Exceeds header
                     finalGradingReview.current +=
-                      "*These will need some work:*\n\n";
+                      "*These will need some work for Exceeds:*\n\n";
 
-                    // wrong output
-                    if (wrong.length) {
-                      wrong.forEach((item) => {
-                        finalGradingReview.current += `:needs-work: ${
+                    // Questioned exceeds output
+                    if (questionedAndExceeds.length) {
+                      questionedAndExceeds.forEach((item) => {
+                        finalGradingReview.current += `:questioned: :exceeds: *EXCEEDS:* ${
                           item.title
                         }\n${item.notes ? `> ${item.notes}\n\n` : ""}`;
                       });
