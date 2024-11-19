@@ -8,7 +8,7 @@ import TechdegreeListItem from "./TechdegreeListItem";
 const TechdegreeDropdown = () => {
   const {
     logo,
-    techdegrees,
+    allTechdegrees,
     activeTechdegree,
     setShowProjects,
     setActiveProjectIndex,
@@ -17,19 +17,25 @@ const TechdegreeDropdown = () => {
     setActiveProjectMockups,
     setCurrentStudyGuide,
   } = useContext(AppState);
+
   const [openDropdown, setOpenDropdown] = useState(false);
+
+  // Created a helper function for readability
+  const resetProjectState = () => {
+    setShowProjects(false);
+    setActiveProjectIndex(null);
+    setActiveProject(null);
+    setActiveProjectMockups([]);
+    setCurrentStudyGuide(null);
+  };
 
   return (
     <div className="w-full rounded-2xl bg-zinc-950 hover:bg-zinc-900 cursor-pointer duration-200 overflow-hidden">
-      {/* dropdown header */}
+      {/* Dropdown header */}
       <div
         onClick={() => {
           setOpenDropdown(!openDropdown);
-          setShowProjects(false);
-          setActiveProjectIndex(null);
-          setActiveProject(null);
-          setActiveProjectMockups([]);
-          setCurrentStudyGuide(null);
+          resetProjectState();
         }}
         className="flex items-center justify-between px-4 py-4"
       >
@@ -67,17 +73,16 @@ const TechdegreeDropdown = () => {
         </button>
       </div>
 
-      {/* menu */}
+      {/* Dropdown menu */}
       <ul
         className={`${
           openDropdown ? "h-auto" : "h-[0px]"
         } w-full duration-200 overflow-hidden`}
       >
-        {techdegrees.length === 0 && (
+        {allTechdegrees?.length === 0 ? (
           <LoadingItem text="Loading your Techdegree data..." />
-        )}
-        {techdegrees.map((td, index) => {
-          return (
+        ) : (
+          allTechdegrees.map((td, index) => (
             <TechdegreeListItem
               td={td}
               color={td.color}
@@ -86,10 +91,11 @@ const TechdegreeDropdown = () => {
               key={index}
               setOpenDropdown={setOpenDropdown}
             />
-          );
-        })}
+          ))
+        )}
       </ul>
     </div>
   );
 };
+
 export default TechdegreeDropdown;

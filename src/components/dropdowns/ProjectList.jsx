@@ -1,11 +1,10 @@
-import axios from "axios";
 import { useContext, useEffect } from "react";
 import { AppState } from "../../App";
 
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const ProjectList = ({ projects }) => {
+const ProjectList = () => {
   const {
     showProjects,
     activeProjectIndex,
@@ -15,7 +14,6 @@ const ProjectList = ({ projects }) => {
     setShowProjects,
     activeProject,
     setActiveProject,
-    activeProjectQuestions,
     setActiveProjectQuestions,
     setActiveProjectMockups,
     setCurrentStudyGuide,
@@ -25,69 +23,55 @@ const ProjectList = ({ projects }) => {
     setAnsweredCount,
   } = useContext(AppState);
 
-  async function getActiveProjectData(id) {
-    let SINGLE_PROJECT_QUERY = encodeURIComponent(`
-    *[_type == "project" && _id == "${id}"]{
-        _id,
-        title,
-        studyGuide,
-        mobileMockup,
-        tabletMockup,
-        desktopMockup,
-        activeMockup,
-        "gradingSections": *[_type == "gradingSection" && references(^._id)]|order(order){
-            title,
-            _id,
-            "requirements": *[_type == "requirement" && references(^._id)]|order(order){
-                title,
-                _id,
-                isExceeds,
-            }
-        },
-        notes[]->
-    }[0]
-    `);
-    let SINGLE_PROJECT_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${SINGLE_PROJECT_QUERY}`;
-
-    let data = await axios.get(SINGLE_PROJECT_URL);
-    setActiveProjectQuestions(data.data.result.gradingSections);
+  async function getActiveProjectData(project) {
+    setActiveProjectQuestions(project.gradingSections);
 
     // reset mockup state
     setActiveProjectMockups([]);
 
-    setProjectMedia(data.data.result);
+    setProjectMedia(project);
   }
 
-  const setProjectMedia = (data) => {
+  // Set media for project
+  const setProjectMedia = (project) => {
     // mobile mockups
-    data.mobileMockup !== null &&
+    project.mockups.mobile !== null &&
       setActiveProjectMockups((prev) => [
         ...prev,
-        { title: "Mobile", mock: data.mobileMockup },
+        { title: "Mobile", mock: project.mockups.mobile },
       ]);
 
     // tablet mockups
-    data.tabletMockup !== null &&
+    project.mockups.tablet !== null &&
       setActiveProjectMockups((prev) => [
         ...prev,
-        { title: "Tablet", mock: data.tabletMockup },
+        { title: "Tablet", mock: project.mockups.tablet },
       ]);
 
     // desktop mockups
-    data.desktopMockup !== null &&
+    project.mockups.desktop !== null &&
       setActiveProjectMockups((prev) => [
         ...prev,
-        { title: "Desktop", mock: data.desktopMockup },
+        { title: "Desktop", mock: project.mockups.desktop },
       ]);
+    setCurrentStudyGuide(project.studyGuide || null);
+  };
 
-    // study guide
-    data.studyGuide !== null
-      ? setCurrentStudyGuide(data.studyGuide)
-      : setCurrentStudyGuide(null);
+  // Created a helper function for readability
+  const resetProjectState = () => {
+    setAnsweredCount(0);
+    setActiveProject(null);
+    setActiveProjectIndex(null);
+    setActiveProjectQuestions(null);
+    setGradedCorrect([]);
+    setGradedQuestioned([]);
+    setGradedWrong([]);
   };
 
   useEffect(() => {
-    activeProject !== null && getActiveProjectData(activeProject._id);
+    if (activeProject) {
+      getActiveProjectData(activeProject);
+    }
   }, [activeProject]);
 
   return (
@@ -106,7 +90,7 @@ const ProjectList = ({ projects }) => {
               <IoClose />
             </button>
           </li>
-          {projects.map((project, index) => {
+          {activeTechdegree.projects.map((project, index) => {
             const isActive = index === activeProjectIndex;
             const itemClassNames = `py-3 px-5 pr-1 flex items-center hover:bg-white hover:bg-opacity-10 rounded-xl cursor-pointer duration-200 ${
               isActive ? "bg-white bg-opacity-10" : ""
@@ -118,14 +102,9 @@ const ProjectList = ({ projects }) => {
                 } ${itemClassNames}`}
                 key={index}
                 onClick={() => {
-                  setAnsweredCount(0);
-                  setActiveProject(null);
-                  setActiveProjectIndex(null);
-                  setActiveProjectQuestions(null);
-                  setGradedCorrect([]);
-                  setGradedQuestioned([]);
-                  setGradedWrong([]);
-                  setActiveProjectIndex(index), setActiveProject(project);
+                  resetProjectState();
+                  setActiveProjectIndex(index);
+                  setActiveProject(project);
                 }}
               >
                 <div className="text-2xl">

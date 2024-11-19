@@ -20,7 +20,6 @@ const MainSidebar = () => {
     activeProject,
     setActiveTechdegree,
     activeTechdegree,
-    projects,
     setShowProjects,
     reviewSidebarOpen,
     setReviewSidebarOpen,
@@ -82,9 +81,7 @@ const MainSidebar = () => {
         <div className="mt-5 flex flex-col gap-2">
           <TechdegreeDropdown />
 
-          {showProjects && projects !== null && (
-            <ProjectList projects={projects} />
-          )}
+          {showProjects && activeTechdegree && <ProjectList />}
 
           <LinksDropdown />
           <ProjectMediaDropdown />
