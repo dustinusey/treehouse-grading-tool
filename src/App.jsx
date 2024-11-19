@@ -17,9 +17,6 @@ const App = () => {
     const mode = localStorage.getItem("darkMode");
     return mode === "true" ? true : false;
   });
-  // main sidebar
-  const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
-  // review sidebar
   const [reviewSidebarOpen, setReviewSidebarOpen] = useState(false);
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
@@ -153,9 +150,6 @@ const App = () => {
         setDarkMode,
         // th logo
         logo,
-        // main sidebar
-        mainSidebarOpen,
-        setMainSidebarOpen,
         // review sidebar
         reviewSidebarOpen,
         setReviewSidebarOpen,

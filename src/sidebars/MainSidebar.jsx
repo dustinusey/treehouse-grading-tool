@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FiSun } from "react-icons/fi";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
 import { LuMoonStar } from "react-icons/lu";
@@ -11,11 +11,11 @@ import ProjectMediaDropdown from "../components/dropdowns/project-media/ProjectM
 import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDropdown";
 
 const MainSidebar = () => {
+  const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
+
   const {
     darkMode,
     setDarkMode,
-    mainSidebarOpen,
-    setMainSidebarOpen,
     showProjects,
     activeProject,
     setActiveTechdegree,
