@@ -9,7 +9,8 @@ import ReviewItemsWrong from "../components/review-items/ReviewItemsWrong";
 
 import { useContext } from "react";
 
-const ReviewSidebar = () => {
+const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
+  const [isOpen, setIsOpen] = useState(isSidebarOpen);
   const [copied, setCopied] = useState(false);
 
   const {
@@ -18,8 +19,6 @@ const ReviewSidebar = () => {
     gradedWrong,
     finalGradingReview,
     activeTechdegree,
-    reviewSidebarOpen,
-    setReviewSidebarOpen,
   } = useContext(AppState);
 
   const copyToClipboard = async () => {
@@ -36,9 +35,21 @@ const ReviewSidebar = () => {
     }
   };
 
+  // Here to handle the external change in App.jsx where if the grading is done, the sidebar opens
+  useEffect(() => {
+    setIsOpen(isSidebarOpen);
+  }, [isSidebarOpen]);
+
+  const toggleSidebar = () => {
+    const newOpenState = !isOpen;
+    setIsOpen(newOpenState);
+    onSidebarToggle(newOpenState); // Notify App.jsx about the new state
+  };
+
+  // Here for handling OPT / ALT + R shortcut
   const handleSidebarToggles = (event) => {
     if (event.altKey && event.code === "KeyR") {
-      setReviewSidebarOpen(!reviewSidebarOpen);
+      toggleSidebar();
     }
   };
 
@@ -53,26 +64,22 @@ const ReviewSidebar = () => {
   return (
     <div
       className={`${
-        reviewSidebarOpen && "min-w-[450px] w-[450px]"
+        isOpen && "min-w-[450px] w-[450px]"
       } px-5 text-white duration-200`}
     >
       <div className="flex items-center justify-between h-[50px]">
-        {reviewSidebarOpen && (
-          <p className="font-bold text-xl mr-5">Grading Review</p>
-        )}
+        {isOpen && <p className="font-bold text-xl mr-5">Grading Review</p>}
         <button
-          onClick={() => {
-            setReviewSidebarOpen(!reviewSidebarOpen);
-          }}
+          onClick={toggleSidebar}
           className={`${
-            !reviewSidebarOpen ? "rounded-lg" : "rounded-full"
+            !isOpen ? "rounded-lg" : "rounded-full"
           } bg-zinc-700 text-white cursor-pointer size-[40px] grid place-items-center`}
         >
-          {reviewSidebarOpen ? <IoCloseSharp /> : <FaListCheck />}
+          {isOpen ? <IoCloseSharp /> : <FaListCheck />}
         </button>
       </div>
 
-      {reviewSidebarOpen && (
+      {isOpen && (
         <div className="h-[92%] overflow-auto mt-10 pr-5 review-sidebar">
           {gradedCorrect.length !== 0 ||
           gradedQuestioned.length !== 0 ||
@@ -110,7 +117,7 @@ const ReviewSidebar = () => {
 
                   // Correct Output
                   if (correct.length || correctAndExceeds.length) {
-                    // correct meets output
+                    // Correct meets output
                     if (correct.length) {
                       correct.forEach((item) => {
                         finalGradingReview.current += `:meets: ${item.title}\n`;
@@ -151,7 +158,7 @@ const ReviewSidebar = () => {
                       });
                     }
 
-                    // gap
+                    // Gap
                     finalGradingReview.current += "\n\n\n";
                   }
 
@@ -170,7 +177,7 @@ const ReviewSidebar = () => {
                       });
                     }
 
-                    // wrong exceeds output
+                    // Wrong exceeds output
                     if (wrongAndExceeds.length) {
                       wrongAndExceeds.forEach((item) => {
                         finalGradingReview.current += `:needs-work: :exceeds: *EXCEEDS:* ${

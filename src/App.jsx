@@ -51,6 +51,11 @@ const App = () => {
       });
   }, [activeProjectQuestions]);
 
+  // toggles grading review sidebar
+  const handleSidebarToggle = (isOpen) => {
+    setReviewSidebarOpen(isOpen);
+  };
+
   // toggles grading review sidebar and main sidebar upon completion of grading
   useEffect(() => {
     if ((answeredCount / allQuestions.current.length) * 100 >= 100) {
@@ -143,9 +148,6 @@ const App = () => {
         // theme
         darkMode,
         setDarkMode,
-        // review sidebar
-        reviewSidebarOpen,
-        setReviewSidebarOpen,
         // techdgrees & loading
         allTechdegrees,
         techdegreesLoaded,
@@ -190,7 +192,10 @@ const App = () => {
         {activeOverlay && <Overlay />}
         <MainSidebar />
         <ViewContainer />
-        <ReviewSidebar />
+        <ReviewSidebar
+          isSidebarOpen={reviewSidebarOpen}
+          onSidebarToggle={handleSidebarToggle}
+        />
       </div>
     </AppState.Provider>
   );
