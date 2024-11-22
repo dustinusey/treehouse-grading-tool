@@ -10,17 +10,12 @@ import LinksDropdown from "../components/dropdowns/links/LinksDropdown";
 import ProjectMediaDropdown from "../components/dropdowns/project-media/ProjectMediaDropdown";
 import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDropdown";
 
-const MainSidebar = () => {
+const MainSidebar = ({ darkMode, setDarkMode }) => {
   const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
 
-  const {
-    darkMode,
-    setDarkMode,
-    activeProject,
-    setActiveTechdegree,
-    activeTechdegree,
-  } = useContext(AppState);
+  const { activeProject, setActiveTechdegree, activeTechdegree } =
+    useContext(AppState);
 
   const handleSidebarToggles = (event) => {
     if (event.altKey && event.code === "KeyE") {

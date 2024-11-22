@@ -19,7 +19,6 @@ const App = () => {
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
   const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
-  const [techdegreesLoaded, setTechdegreesLoaded] = useState(false);
   // projects
   const [allProjects, setAllProjects] = useState(null); // NEW FOR TESTING (TA)
   const [activeProject, setActiveProject] = useState(null);
@@ -130,8 +129,6 @@ const App = () => {
 
         // Store all projects
         setAllProjects(allProjects);
-
-        setTechdegreesLoaded(true);
       } catch (error) {
         console.error("Error fetching all data:", error);
       }
@@ -143,13 +140,8 @@ const App = () => {
   return (
     <AppState.Provider
       value={{
-        // theme
-        darkMode,
-        setDarkMode,
         // techdgrees & loading
         allTechdegrees,
-        techdegreesLoaded,
-        setTechdegreesLoaded,
         activeTechdegree,
         setActiveTechdegree,
         // projects
@@ -184,7 +176,7 @@ const App = () => {
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">
         {activeOverlay && <Overlay />}
-        <MainSidebar />
+        <MainSidebar darkMode={darkMode} setDarkMode={setDarkMode} />
         <ViewContainer />
         <ReviewSidebar
           isSidebarOpen={reviewSidebarOpen}
