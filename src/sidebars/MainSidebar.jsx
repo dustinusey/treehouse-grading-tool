@@ -13,6 +13,7 @@ import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDr
 const MainSidebar = ({ darkMode, setDarkMode }) => {
   const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const { activeProject, setActiveTechdegree, activeTechdegree } =
     useContext(AppState);
@@ -69,11 +70,14 @@ const MainSidebar = ({ darkMode, setDarkMode }) => {
           <TechdegreeDropdown setShowProjects={setShowProjects} />
 
           {showProjects && activeTechdegree && (
-            <ProjectList setShowProjects={setShowProjects} />
+            <ProjectList
+              setShowProjects={setShowProjects}
+              setSelectedProject={setSelectedProject}
+            />
           )}
 
           <LinksDropdown />
-          <ProjectMediaDropdown />
+          <ProjectMediaDropdown selectedProject={selectedProject} />
         </div>
       )}
       <div

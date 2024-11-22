@@ -4,7 +4,7 @@ import { AppState } from "../../App";
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const ProjectList = ({ setShowProjects }) => {
+const ProjectList = ({ setShowProjects, setSelectedProject }) => {
   const {
     activeProjectIndex,
     setActiveProjectIndex,
@@ -70,6 +70,7 @@ const ProjectList = ({ setShowProjects }) => {
                 resetProjectState();
                 setActiveProjectIndex(index);
                 setActiveProject(project);
+                setSelectedProject(project);
               }}
             >
               <div className="text-2xl">
