@@ -8,13 +8,8 @@ import { SiReaddotcv } from "react-icons/si";
 import { AppState } from "../../../App";
 
 const ProjectMediaDropdown = () => {
-  const {
-    activeProject,
-    activeProjectMockups,
-    setCurrentMockup,
-    setActiveOverlay,
-    currentStudyGuide,
-  } = useContext(AppState);
+  const { activeProject, setCurrentMockup, setActiveOverlay } =
+    useContext(AppState);
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [copyToClipboardAnimation, setCopyToClipboardAnimation] =
@@ -22,7 +17,7 @@ const ProjectMediaDropdown = () => {
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(currentStudyGuide);
+      await navigator.clipboard.writeText(activeProject.studyGuide);
       setCopyToClipboardAnimation(true);
       setTimeout(() => {
         setCopyToClipboardAnimation(false);
@@ -31,6 +26,15 @@ const ProjectMediaDropdown = () => {
       alert("Failed to copy: ", err);
     }
   };
+
+  // Convert mockups to an array
+  let mockupArray;
+  if (activeProject) {
+    mockupArray = Object.entries(activeProject.mockups)
+      .map(([key, value]) => ({ type: key, mock: value })) // Convert to array of objects
+      .filter((mockup) => mockup.mock !== null); // Only allow not-null values
+  }
+
   return (
     <div className="w-full rounded-2xl bg-zinc-950 hover:bg-zinc-900 cursor-pointer duration-200 overflow-hidden">
       {/* dropdown header */}
@@ -45,7 +49,7 @@ const ProjectMediaDropdown = () => {
         </div>
         <div>
           <p className="font-bold">Project Media</p>
-          <p className="text-sm opacity-50">Mockups and studyguides</p>
+          <p className="text-sm opacity-50">Mockups and Study Guides</p>
         </div>
         <button
           className={`${
@@ -62,35 +66,33 @@ const ProjectMediaDropdown = () => {
           openDropdown ? "h-auto" : "h-[0px]"
         } w-full overflow-hidden`}
       >
-        {activeProject === null && (
+        {!activeProject && (
           <li className="py-5 text-center">No project selected</li>
         )}
 
-        {activeProject !== null &&
-          activeProjectMockups.length === 0 &&
-          currentStudyGuide === null && (
-            <li className="py-5 text-center">
-              There is no media for this project
-            </li>
-          )}
+        {activeProject && !mockupArray.length && !activeProject.studyGuide && (
+          <li className="py-5 text-center">
+            There is no media for this project
+          </li>
+        )}
 
-        {activeProjectMockups.length !== 0 &&
-          activeProjectMockups.map((mock, index) => {
+        {activeProject && mockupArray.length ? (
+          mockupArray.map((mockup, index) => {
             return (
               <li
                 onClick={() => {
-                  setCurrentMockup(mock.mock);
+                  setCurrentMockup(mockup.mock);
                   setActiveOverlay(true);
                 }}
                 className="px-8 py-3 pl-[28px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200"
                 key={index}
               >
-                {mock.mock !== null && (
+                {mockup.mock !== null && (
                   <p className="flex justify-between items-center w-full">
                     <span className="text-2xl mr-5">
                       <IoIosImages />
                     </span>
-                    {`${mock.title} mockup`}
+                    {`${mockup.type} mockup`}
                     <button className="ml-auto">
                       <LuEye />
                     </button>
@@ -98,20 +100,21 @@ const ProjectMediaDropdown = () => {
                 )}
               </li>
             );
-          })}
+          })
+        ) : (
+          <></>
+        )}
 
-        {currentStudyGuide !== null && (
+        {activeProject?.studyGuide && (
           <li className="py-3 pl-[28px] pr-[258px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200">
-            {/* study guide icon */}
             <div className="w-[30px] mr-5 text-2xl">
               <SiReaddotcv />
             </div>
 
-            {/* study guide text */}
             <div className="mr-5 min-w-[185px] w-[185px]">
               <p>Study Guide</p>
               <p className="text-xs text-zinc-500 shorten1">
-                {currentStudyGuide}
+                {activeProject.studyGuide}
               </p>
             </div>
 
@@ -127,7 +130,7 @@ const ProjectMediaDropdown = () => {
               <a
                 className="text-[20px]"
                 target="_blank"
-                href={currentStudyGuide}
+                href={activeProject.studyGuide}
                 title="open link in new window"
                 rel="noopener noreferrer" // Added for security when using target="_blank"
               >

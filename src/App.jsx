@@ -27,10 +27,8 @@ const App = () => {
   const [activeProjectIndex, setActiveProjectIndex] = useState(null);
   const [activeProjectQuestions, setActiveProjectQuestions] = useState(null);
   // project media
-  const [activeProjectMockups, setActiveProjectMockups] = useState([]);
   const [currentMockup, setCurrentMockup] = useState(null);
   const [activeOverlay, setActiveOverlay] = useState(false);
-  const [currentStudyGuide, setCurrentStudyGuide] = useState(null);
   // graded requirements
   const [gradedCorrect, setGradedCorrect] = useState([]);
   const [gradedQuestioned, setGradedQuestioned] = useState([]);
@@ -164,14 +162,10 @@ const App = () => {
         activeProjectQuestions,
         setActiveProjectQuestions,
         // project media
-        activeProjectMockups,
-        setActiveProjectMockups,
         activeOverlay,
         setActiveOverlay,
         currentMockup,
         setCurrentMockup,
-        currentStudyGuide,
-        setCurrentStudyGuide,
         // grading requirements
         gradedCorrect,
         setGradedCorrect,

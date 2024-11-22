@@ -13,8 +13,6 @@ const TechdegreeDropdown = ({ setShowProjects }) => {
     setActiveProjectIndex,
     activeProject,
     setActiveProject,
-    setActiveProjectMockups,
-    setCurrentStudyGuide,
   } = useContext(AppState);
 
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -24,8 +22,6 @@ const TechdegreeDropdown = ({ setShowProjects }) => {
     setShowProjects(false);
     setActiveProjectIndex(null);
     setActiveProject(null);
-    setActiveProjectMockups([]);
-    setCurrentStudyGuide(null);
   };
 
   return (
