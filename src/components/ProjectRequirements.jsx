@@ -5,20 +5,20 @@ import GradingSection from "./GradingSection";
 const ProjectRequirements = () => {
   const { activeProjectQuestions } = useContext(AppState);
 
-  const [questions, setQuestions] = useState([]);
+  const [sections, setSections] = useState([]);
 
   useEffect(() => {
-    setQuestions([]);
-    activeProjectQuestions !== null &&
+    setSections([]);
+    activeProjectQuestions &&
       activeProjectQuestions.map((question) => {
-        setQuestions((prev) => [...prev, question]);
+        setSections((prev) => [...prev, question]);
       });
   }, [activeProjectQuestions]);
 
   return (
     <ul className="pb-5 px-5">
-      {questions.map((question, index) => {
-        return <GradingSection key={index} index={index} question={question} />;
+      {sections.map((section, index) => {
+        return <GradingSection key={index} index={index} section={section} />;
       })}
     </ul>
   );

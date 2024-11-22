@@ -15,8 +15,6 @@ const ProjectUtilityButtons = () => {
             setExcludeExceeds(!excludeExceeds);
           }}
           className={`toggle-switch bg-zinc-200 dark:bg-zinc-400 checked:bg-emerald-500 cursor-pointer`}
-          Exclude
-          Exceeds
         />
         <label htmlFor="excludeExceeds" className="cursor-pointer">
           Exclude Exceeds

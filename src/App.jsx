@@ -24,9 +24,10 @@ const App = () => {
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
   const [techdegrees, setTechdegrees] = useState([]);
+  const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
   const [techdegreesLoaded, setTechdegreesLoaded] = useState(false);
   // projects
-  const [projects, setProjects] = useState(null);
+  const [allProjects, setAllProjects] = useState(null); // NEW FOR TESTING (TA)
   const [showProjects, setShowProjects] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
   // active project list items in sidebar
@@ -49,7 +50,7 @@ const App = () => {
   // getting all current projects questions
   useEffect(() => {
     allQuestions.current = [];
-    activeProjectQuestions !== null &&
+    activeProjectQuestions &&
       activeProjectQuestions.forEach((question) => {
         question.requirements.forEach((requirement) => {
           allQuestions.current.push(requirement);
@@ -74,46 +75,75 @@ const App = () => {
     }
   }, [darkMode]);
 
-  // getting techdegree data
+  // Fetch all TD data in one call and set allTD / allProject states
   useEffect(() => {
-    async function getTDs() {
-      let TDS_QUERY = encodeURIComponent('*[_type == "techdegree"]');
-      let TDS_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${TDS_QUERY}`;
-      let data = await axios.get(TDS_URL);
-      setTechdegreesLoaded(true);
-      setTechdegrees(data.data.result);
-    }
-    getTDs();
-  }, []);
-
-  useEffect(() => {
-    async function getProjects() {
-      if (activeTechdegree !== null) {
-        let PROJECTS_QUERY = encodeURIComponent(`
-          *[_type == "techdegree" && _id == "${activeTechdegree._id}"]{
+    async function fetchAllData() {
+      const ALL_DATA_QUERY = encodeURIComponent(`
+        *[_type == "techdegree"]{
+          _id,
+          color,
+          name,
+          "projects": *[_type == "project" && references(^._id)] | order(projectNumber){
+            _id,
+            title,
+            projectNumber,
+            studyGuide,
+            "mockups": {
+              "mobile": mobileMockup,
+              "tablet": tabletMockup,
+              "desktop": desktopMockup
+            },
+            notes[]->{
+              title,
+              content,
+              createdAt
+            },
+            "gradingSections": *[_type == "gradingSection" && references(^._id)]|order(order){
               _id,
-              color,
-              name,
-              "projects": *[_type == "project" && references(^._id)] | order(projectNumber){
-                  title,
-                  _id
-              },
-              resources[]->{
-                  title,
-                  description,
-                  link
+              title,
+              "requirements": *[_type == "requirement" && references(^._id)]|order(order){
+                _id,
+                title,
+                description,
+                isExceeds
               }
-          }[0]
-          `);
-        let PROJECTS_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${PROJECTS_QUERY}`;
+            },
+            resources[]->{
+              title,
+              description,
+              link
+            }
+          }
+        }
+      `);
+      const ALL_DATA_URL = `https://supw1mz3.api.sanity.io/v2021-10-21/data/query/production?query=${ALL_DATA_QUERY}`;
 
-        let data = await axios.get(PROJECTS_URL);
-        setProjects(data.data.result.projects);
+      try {
+        const response = await axios.get(ALL_DATA_URL);
+        const result = response.data.result;
+        // setTechdegrees(result); /* COMMENTED OUT FOR TESTING */
+
+        // Store all TD Data
+        setAllTechdegrees(result);
+        // Create an array of all projects and add their TD name for future possible searching.
+        const allProjects = result.flatMap((td) =>
+          td.projects.map((project) => ({
+            ...project, // Spread existing properties
+            tdName: td.name, // Add Techdegree name to each project
+          }))
+        );
+
+        // Store all projects
+        setAllProjects(allProjects);
+
+        setTechdegreesLoaded(true);
+      } catch (error) {
+        console.error("Error fetching all data:", error);
       }
     }
 
-    getProjects();
-  }, [activeTechdegree]);
+    fetchAllData();
+  }, []);
 
   return (
     <AppState.Provider
@@ -131,13 +161,14 @@ const App = () => {
         setReviewSidebarOpen,
         // techdgrees & loading
         techdegrees,
+        allTechdegrees,
         setTechdegrees,
         techdegreesLoaded,
         setTechdegreesLoaded,
         activeTechdegree,
         setActiveTechdegree,
         // projects
-        projects,
+        allProjects,
         showProjects,
         setShowProjects,
         activeProject,

@@ -38,7 +38,7 @@ const ProjectMediaDropdown = () => {
         onClick={() => {
           setOpenDropdown(!openDropdown);
         }}
-        className="flex items-center justify-betwee px-4 py-4"
+        className="flex items-center justify-between px-4 py-4"
       >
         <div className="w-[50px] h-[50px] rounded-xl bg-[#F45279] grid place-items-center mr-3 text-2xl">
           <FaRegFileAlt />
