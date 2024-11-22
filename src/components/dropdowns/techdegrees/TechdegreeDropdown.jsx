@@ -3,14 +3,13 @@ import { IoChevronDown } from "react-icons/io5";
 import { AppState } from "../../../App";
 
 import LoadingItem from "../LoadingItem";
+import logo from "../../../assets/thlogo.png";
 import TechdegreeListItem from "./TechdegreeListItem";
 
-const TechdegreeDropdown = () => {
+const TechdegreeDropdown = ({ setShowProjects }) => {
   const {
-    logo,
     allTechdegrees,
     activeTechdegree,
-    setShowProjects,
     setActiveProjectIndex,
     activeProject,
     setActiveProject,
@@ -44,11 +43,19 @@ const TechdegreeDropdown = () => {
             style={{ backgroundColor: activeTechdegree.color }}
             className="min-w-[50px] min-h-[50px] rounded-xl grid place-items-center mr-3 duration-500"
           >
-            <img className="w-full max-w-[30px]" src={logo} alt="" />
+            <img
+              className="w-full max-w-[30px]"
+              src={logo}
+              alt="Treehouse Logo"
+            />
           </div>
         ) : (
           <div className="min-w-[50px] min-h-[50px] rounded-xl grid place-items-center mr-3 bg-zinc-400">
-            <img className="w-full max-w-[30px]" src={logo} alt="" />
+            <img
+              className="w-full max-w-[30px]"
+              src={logo}
+              alt="Treehouse Logo"
+            />
           </div>
         )}
 
@@ -82,14 +89,12 @@ const TechdegreeDropdown = () => {
         {allTechdegrees?.length === 0 ? (
           <LoadingItem text="Loading your Techdegree data..." />
         ) : (
-          allTechdegrees.map((td, index) => (
+          allTechdegrees.map((td) => (
             <TechdegreeListItem
               td={td}
-              color={td.color}
-              title={td.name}
-              id={td.id}
-              key={index}
+              key={td._id}
               setOpenDropdown={setOpenDropdown}
+              setShowProjects={setShowProjects}
             />
           ))
         )}

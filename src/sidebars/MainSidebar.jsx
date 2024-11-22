@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FiSun } from "react-icons/fi";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
 import { LuMoonStar } from "react-icons/lu";
@@ -11,28 +11,20 @@ import ProjectMediaDropdown from "../components/dropdowns/project-media/ProjectM
 import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDropdown";
 
 const MainSidebar = () => {
+  const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
+  const [showProjects, setShowProjects] = useState(false);
+
   const {
     darkMode,
     setDarkMode,
-    mainSidebarOpen,
-    setMainSidebarOpen,
-    showProjects,
     activeProject,
     setActiveTechdegree,
     activeTechdegree,
-    setShowProjects,
-    reviewSidebarOpen,
-    setReviewSidebarOpen,
   } = useContext(AppState);
 
   const handleSidebarToggles = (event) => {
-    //main sidebar
     if (event.altKey && event.code === "KeyE") {
       setMainSidebarOpen(!mainSidebarOpen);
-    }
-    //review sidebar
-    if (event.altKey && event.code === "KeyR") {
-      setReviewSidebarOpen(!reviewSidebarOpen);
     }
   };
 
@@ -42,7 +34,7 @@ const MainSidebar = () => {
     return () => {
       window.removeEventListener("keydown", handleSidebarToggles);
     };
-  }, [mainSidebarOpen, reviewSidebarOpen]);
+  }, [handleSidebarToggles]);
 
   return (
     <div
@@ -79,9 +71,11 @@ const MainSidebar = () => {
       {/* dropdowns*/}
       {mainSidebarOpen && (
         <div className="mt-5 flex flex-col gap-2">
-          <TechdegreeDropdown />
+          <TechdegreeDropdown setShowProjects={setShowProjects} />
 
-          {showProjects && activeTechdegree && <ProjectList />}
+          {showProjects && activeTechdegree && (
+            <ProjectList setShowProjects={setShowProjects} />
+          )}
 
           <LinksDropdown />
           <ProjectMediaDropdown />

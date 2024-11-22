@@ -6,8 +6,6 @@ import MainSidebar from "./sidebars/MainSidebar";
 import ReviewSidebar from "./sidebars/ReviewSidebar";
 import ViewContainer from "./views/ViewContainer";
 
-import logo from "./assets/thlogo.png";
-
 // app state
 export const AppState = createContext();
 
@@ -17,18 +15,13 @@ const App = () => {
     const mode = localStorage.getItem("darkMode");
     return mode === "true" ? true : false;
   });
-  // main sidebar
-  const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
-  // review sidebar
   const [reviewSidebarOpen, setReviewSidebarOpen] = useState(false);
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
-  const [techdegrees, setTechdegrees] = useState([]);
   const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
   const [techdegreesLoaded, setTechdegreesLoaded] = useState(false);
   // projects
   const [allProjects, setAllProjects] = useState(null); // NEW FOR TESTING (TA)
-  const [showProjects, setShowProjects] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
   // active project list items in sidebar
   const [activeProjectIndex, setActiveProjectIndex] = useState(null);
@@ -57,6 +50,11 @@ const App = () => {
         });
       });
   }, [activeProjectQuestions]);
+
+  // toggles grading review sidebar
+  const handleSidebarToggle = (isOpen) => {
+    setReviewSidebarOpen(isOpen);
+  };
 
   // toggles grading review sidebar and main sidebar upon completion of grading
   useEffect(() => {
@@ -121,7 +119,6 @@ const App = () => {
       try {
         const response = await axios.get(ALL_DATA_URL);
         const result = response.data.result;
-        // setTechdegrees(result); /* COMMENTED OUT FOR TESTING */
 
         // Store all TD Data
         setAllTechdegrees(result);
@@ -151,26 +148,14 @@ const App = () => {
         // theme
         darkMode,
         setDarkMode,
-        // th logo
-        logo,
-        // main sidebar
-        mainSidebarOpen,
-        setMainSidebarOpen,
-        // review sidebar
-        reviewSidebarOpen,
-        setReviewSidebarOpen,
         // techdgrees & loading
-        techdegrees,
         allTechdegrees,
-        setTechdegrees,
         techdegreesLoaded,
         setTechdegreesLoaded,
         activeTechdegree,
         setActiveTechdegree,
         // projects
         allProjects,
-        showProjects,
-        setShowProjects,
         activeProject,
         setActiveProject,
         // active project list items
@@ -207,7 +192,10 @@ const App = () => {
         {activeOverlay && <Overlay />}
         <MainSidebar />
         <ViewContainer />
-        <ReviewSidebar />
+        <ReviewSidebar
+          isSidebarOpen={reviewSidebarOpen}
+          onSidebarToggle={handleSidebarToggle}
+        />
       </div>
     </AppState.Provider>
   );
