@@ -4,7 +4,7 @@ import { AppState } from "../../App";
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const ProjectList = ({ setShowProjects }) => {
+const ProjectList = ({ setShowProjects, setSelectedProject }) => {
   const {
     activeProjectIndex,
     setActiveProjectIndex,
@@ -13,8 +13,6 @@ const ProjectList = ({ setShowProjects }) => {
     activeProject,
     setActiveProject,
     setActiveProjectQuestions,
-    setActiveProjectMockups,
-    setCurrentStudyGuide,
     setGradedCorrect,
     setGradedQuestioned,
     setGradedWrong,
@@ -23,37 +21,7 @@ const ProjectList = ({ setShowProjects }) => {
 
   async function getActiveProjectData(project) {
     setActiveProjectQuestions(project.gradingSections);
-
-    // reset mockup state
-    setActiveProjectMockups([]);
-
-    setProjectMedia(project);
   }
-
-  // Set media for project
-  const setProjectMedia = (project) => {
-    // mobile mockups
-    project.mockups.mobile !== null &&
-      setActiveProjectMockups((prev) => [
-        ...prev,
-        { title: "Mobile", mock: project.mockups.mobile },
-      ]);
-
-    // tablet mockups
-    project.mockups.tablet !== null &&
-      setActiveProjectMockups((prev) => [
-        ...prev,
-        { title: "Tablet", mock: project.mockups.tablet },
-      ]);
-
-    // desktop mockups
-    project.mockups.desktop !== null &&
-      setActiveProjectMockups((prev) => [
-        ...prev,
-        { title: "Desktop", mock: project.mockups.desktop },
-      ]);
-    setCurrentStudyGuide(project.studyGuide || null);
-  };
 
   // Created a helper function for readability
   const resetProjectState = () => {
@@ -102,6 +70,7 @@ const ProjectList = ({ setShowProjects }) => {
                 resetProjectState();
                 setActiveProjectIndex(index);
                 setActiveProject(project);
+                setSelectedProject(project);
               }}
             >
               <div className="text-2xl">

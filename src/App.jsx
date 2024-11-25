@@ -19,7 +19,6 @@ const App = () => {
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
   const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
-  const [techdegreesLoaded, setTechdegreesLoaded] = useState(false);
   // projects
   const [allProjects, setAllProjects] = useState(null); // NEW FOR TESTING (TA)
   const [activeProject, setActiveProject] = useState(null);
@@ -27,10 +26,8 @@ const App = () => {
   const [activeProjectIndex, setActiveProjectIndex] = useState(null);
   const [activeProjectQuestions, setActiveProjectQuestions] = useState(null);
   // project media
-  const [activeProjectMockups, setActiveProjectMockups] = useState([]);
   const [currentMockup, setCurrentMockup] = useState(null);
   const [activeOverlay, setActiveOverlay] = useState(false);
-  const [currentStudyGuide, setCurrentStudyGuide] = useState(null);
   // graded requirements
   const [gradedCorrect, setGradedCorrect] = useState([]);
   const [gradedQuestioned, setGradedQuestioned] = useState([]);
@@ -132,8 +129,6 @@ const App = () => {
 
         // Store all projects
         setAllProjects(allProjects);
-
-        setTechdegreesLoaded(true);
       } catch (error) {
         console.error("Error fetching all data:", error);
       }
@@ -145,13 +140,8 @@ const App = () => {
   return (
     <AppState.Provider
       value={{
-        // theme
-        darkMode,
-        setDarkMode,
         // techdgrees & loading
         allTechdegrees,
-        techdegreesLoaded,
-        setTechdegreesLoaded,
         activeTechdegree,
         setActiveTechdegree,
         // projects
@@ -164,14 +154,10 @@ const App = () => {
         activeProjectQuestions,
         setActiveProjectQuestions,
         // project media
-        activeProjectMockups,
-        setActiveProjectMockups,
         activeOverlay,
         setActiveOverlay,
         currentMockup,
         setCurrentMockup,
-        currentStudyGuide,
-        setCurrentStudyGuide,
         // grading requirements
         gradedCorrect,
         setGradedCorrect,
@@ -190,7 +176,7 @@ const App = () => {
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">
         {activeOverlay && <Overlay />}
-        <MainSidebar />
+        <MainSidebar darkMode={darkMode} setDarkMode={setDarkMode} />
         <ViewContainer />
         <ReviewSidebar
           isSidebarOpen={reviewSidebarOpen}

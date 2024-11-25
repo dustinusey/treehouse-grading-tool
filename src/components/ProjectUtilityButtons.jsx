@@ -2,8 +2,7 @@ import { useContext } from "react";
 import { AppState } from "../App";
 
 const ProjectUtilityButtons = () => {
-  const { excludeExceeds, setExcludeExceeds, activeTechdegree } =
-    useContext(AppState);
+  const { excludeExceeds, setExcludeExceeds } = useContext(AppState);
 
   return (
     <div className="px-5 py-8 flex items-center gap-2">
