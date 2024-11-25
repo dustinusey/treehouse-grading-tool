@@ -4,6 +4,10 @@ import { AppState } from "../../App";
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
+export async function getActiveProjectData(project) {
+    setActiveProjectQuestions(project.gradingSections);
+  }
+
 const ProjectList = ({ setShowProjects, setSelectedProject }) => {
   const {
     activeProjectIndex,
@@ -18,10 +22,6 @@ const ProjectList = ({ setShowProjects, setSelectedProject }) => {
     setGradedWrong,
     setAnsweredCount,
   } = useContext(AppState);
-
-  async function getActiveProjectData(project) {
-    setActiveProjectQuestions(project.gradingSections);
-  }
 
   // Created a helper function for readability
   const resetProjectState = () => {

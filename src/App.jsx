@@ -70,7 +70,7 @@ const App = () => {
     }
   }, [darkMode]);
 
-  // Fetch all TD data in one call and set allTD / allProject states
+  // Fetch all TD dat  console.log(techdegrees);a in one call and set allTD / allProject states
   useEffect(() => {
     async function fetchAllData() {
       const ALL_DATA_QUERY = encodeURIComponent(`
@@ -144,6 +144,8 @@ const App = () => {
         allTechdegrees,
         activeTechdegree,
         setActiveTechdegree,
+        darkMode,
+        setDarkMode,
         // projects
         allProjects,
         activeProject,
