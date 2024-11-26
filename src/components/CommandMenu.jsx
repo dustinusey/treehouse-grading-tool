@@ -90,7 +90,7 @@ const CommandMenu = ({ copyToClipboard }) => {
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [open, pages, search]);
+  }, [open, pages, search, copyToClipboard]);
 
   const SubItem = (props) => {
     const search = useCommandState((state) => state.search);
