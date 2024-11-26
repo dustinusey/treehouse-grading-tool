@@ -6,112 +6,59 @@ import { FaCheck, FaQuestion } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
 const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
-  const {
-    setGradedCorrect,
-    setGradedQuestioned,
-    setGradedWrong,
-    setAnsweredCount,
-  } = useContext(AppState);
+  const { setGradedRequirements, setAnsweredCount } = useContext(AppState)
 
-  const buttonStyles =
-    "size-[50px] rounded-xl border-2 border-zinc-200 dark:border-zinc-900 grid place-items-center bg-white hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-200 cursor-pointer";
+  const buttonStyles = 'size-[50px] rounded-xl border-2 border-zinc-200 dark:border-zinc-900 grid place-items-center bg-white hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-200 cursor-pointer'
+
+  function handleGrade(grade) {
+    setAnsweredCount(prev => prev + 1)
+    setGraded(true)
+    if (grade !== 'correct') setShowNotes(true)
+    setGrade(grade)
+
+    setGradedRequirements(prev => {
+      const exists = prev.find(item => item.id === req._id)
+      if (!exists) {
+        return [...prev, {
+          id: req._id,
+          title: req.title,
+          isExceeds: req.isExceeds,
+          grade,
+          notes: ''
+        }]
+      }
+      return prev.map(item =>
+        item.id === req._id ? { ...item, grade } : item
+      )
+    })
+  }
+
+  function handleReset() {
+    setAnsweredCount(prev => prev - 1)
+    setGraded(false)
+    setGrade(null)
+    setShowNotes(false)
+    setGradedRequirements(prev =>
+      prev.filter(item => item.id !== req._id)
+    )
+  }
 
   return (
     <ul className="my-3 flex items-center gap-2">
-      <li
-        onClick={() => {
-          setAnsweredCount((prev) => prev + 1);
-          setGraded(true);
-          setGrade("correct");
-          setGradedCorrect((prev) => {
-            const itemExists = prev.some((item) => item.id === req._id);
-            if (!itemExists) {
-              return [
-                ...prev,
-                { id: req._id, title: req.title, isExceeds: req.isExceeds },
-              ];
-            }
-            return prev;
-          });
-        }}
-        className={`${graded ? "disabled" : ""} ${buttonStyles}`}
-      >
+      <li onClick={() => handleGrade('correct')} className={`${graded ? 'disabled' : ''} ${buttonStyles}`}>
         <FaCheck />
       </li>
-      <li
-        onClick={() => {
-          setAnsweredCount((prev) => prev + 1);
-          setGraded(true);
-          setShowNotes(true);
-          setTimeout(() => {
-            setGrade("questioned");
-          }, 300);
-          setGradedQuestioned((prev) => {
-            const itemExists = prev.some((item) => item.id === req._id);
-            if (!itemExists) {
-              return [
-                ...prev,
-                { id: req._id, title: req.title, isExceeds: req.isExceeds },
-              ];
-            }
-            return prev;
-          });
-        }}
-        className={`${graded ? "disabled" : ""} ${buttonStyles}`}
-      >
+      <li onClick={() => handleGrade('questioned')} className={`${graded ? 'disabled' : ''} ${buttonStyles}`}>
         <FaQuestion />
       </li>
-      <li
-        onClick={() => {
-          setAnsweredCount((prev) => prev + 1);
-          setGraded(true);
-          setShowNotes(true);
-          setTimeout(() => {
-            setGrade("wrong");
-          }, 300);
-          setShowNotes(true);
-          setGradedWrong((prev) => {
-            const itemExists = prev.some((item) => item.id === req._id);
-            if (!itemExists) {
-              return [
-                ...prev,
-                { id: req._id, title: req.title, isExceeds: req.isExceeds },
-              ];
-            }
-            return prev;
-          });
-        }}
-        className={`${graded ? "disabled" : ""} ${buttonStyles}`}
-      >
+      <li onClick={() => handleGrade('needs')} className={`${graded ? 'disabled' : ''} ${buttonStyles}`}>
         <IoClose className="text-xl" />
       </li>
-      <li
-        onClick={() => {
-          setAnsweredCount((prev) => prev - 1);
-          // Set graded to true to indicate an item has been graded
-          setGraded(false);
-          setGrade(null);
-
-          setShowNotes(false);
-          // Update gradedCorrect by filtering out the item with the matching ID
-          setGradedCorrect((prev) =>
-            prev.filter((item) => item.id !== req._id)
-          );
-
-          // Update gradedQuestioned by filtering out the item with the matching ID
-          setGradedQuestioned((prev) =>
-            prev.filter((item) => item.id !== req._id)
-          );
-
-          // Update gradedWrong by filtering out the item with the matching ID
-          setGradedWrong((prev) => prev.filter((item) => item.id !== req._id));
-        }}
-        className={`${!graded ? "disabled" : ""} ${buttonStyles}`}
-      >
+      <li onClick={handleReset} className={`${!graded ? 'disabled' : ''} ${buttonStyles}`}>
         <FaRedo />
       </li>
     </ul>
-  );
-};
+  )
+}
 
 export default GradingButtons;

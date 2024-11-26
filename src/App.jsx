@@ -32,6 +32,7 @@ const App = () => {
   const [gradedCorrect, setGradedCorrect] = useState([]);
   const [gradedQuestioned, setGradedQuestioned] = useState([]);
   const [gradedWrong, setGradedWrong] = useState([]);
+  const [gradedRequirements, setGradedRequirements] = useState([])
   const finalGradingReview = useRef("");
   const [excludeExceeds, setExcludeExceeds] = useState(false);
   // progress bar
@@ -167,6 +168,8 @@ const App = () => {
         setGradedQuestioned,
         gradedWrong,
         setGradedWrong,
+        gradedRequirements,
+        setGradedRequirements,
         finalGradingReview,
         excludeExceeds,
         setExcludeExceeds,
