@@ -17,8 +17,8 @@ const MainSidebar = ({ darkMode, setDarkMode }) => {
   const { activeProject, setActiveTechdegree, activeTechdegree } =
     useContext(AppState);
 
-  const handleSidebarToggles = (event) => {
-    if (event.altKey && event.code === "KeyE") {
+  const handleSidebarToggles = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.code === "KeyB") {
       setMainSidebarOpen(!mainSidebarOpen);
     }
   };

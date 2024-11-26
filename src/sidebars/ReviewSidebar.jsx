@@ -50,8 +50,8 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
   };
 
   // Here for handling OPT / ALT + R shortcut
-  const handleSidebarToggles = (event) => {
-    if (event.altKey && event.code === "KeyR") {
+  const handleSidebarToggles = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.code === "KeyR") {
       toggleSidebar();
     }
   };
