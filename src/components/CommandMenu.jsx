@@ -31,8 +31,6 @@ const CommandMenu = ({ copyToClipboard }) => {
   const [search, setSearch] = useState("");
   const page = pages[pages.length - 1];
 
-  console.log("this is being rendered");
-
   const resetProjectState = () => {
     setAnsweredCount(0);
     setActiveProject(null);
@@ -83,7 +81,7 @@ const CommandMenu = ({ copyToClipboard }) => {
           setOpen(false);
         }
       }
-      if ((e.metaKey || e.ctrlKey) && e.code === "KeyC") {
+      if (e.ctrlKey && e.code === "KeyC") {
         e.preventDefault();
         copyToClipboard();
       }

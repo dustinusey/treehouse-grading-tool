@@ -127,8 +127,9 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
       {isOpen && (
         <div className="h-[92%] overflow-auto mt-10 pr-5 review-sidebar">
           {gradedRequirements.length !== 0 ? (
-            <div className="bg-zinc-800 sticky top-0 pb-5">
-              <button
+            <>
+              <div className="bg-zinc-800 sticky top-0 pb-5">
+                <button
                 onClick={() => {
                   setCopied(true);
                   // copy contents of setfinalgradingreview to clipboard as text
@@ -144,34 +145,16 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
                     : {}
                 }
                 className="w-full p-4 text-center bg-zinc-700 rounded-lg hover:bg-zinc-600 duration-200"
-              >
-                {copied ? "Review Copied!" : "Copy Review"}
-              </button>
-            </div>
+                >
+                  {copied ? "Review Copied!" : "Copy Review"}
+                </button>
+              </div>
+            <ReviewItems items={gradedRequirements} />
+            </>
           ) : (
             <p className="p-5 text-center text-sm text-zinc-400">
               You haven&apos;t graded anything yet.
             </p>
-          )}
-
-          {gradedRequirements.length !== 0 && (
-            <>
-              <ReviewItems
-                items={gradedRequirements.filter(r => r.grade === 'correct')}
-                title="These were right"
-                titleColor="text-[#54CD76]"
-              />
-              <ReviewItems
-                items={gradedRequirements.filter(r => r.grade === 'questioned')}
-                title="These were questionable"
-                titleColor="text-orange-400 dark:text-orange-300"
-              />
-              <ReviewItems
-                items={gradedRequirements.filter(r => r.grade === 'needs')}
-                title="These need work"
-                titleColor="text-red-400"
-              />
-            </>
           )}
         </div>
       )}
