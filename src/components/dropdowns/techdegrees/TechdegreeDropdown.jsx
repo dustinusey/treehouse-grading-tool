@@ -5,22 +5,21 @@ import { AppState } from "../../../App";
 import LoadingItem from "../LoadingItem";
 import logo from "../../../assets/thlogo.png";
 import TechdegreeListItem from "./TechdegreeListItem";
+import { useProjectDataContext } from "../../../context/ProjectDataContext";
 
 const TechdegreeDropdown = ({ setShowProjects }) => {
   const {
-    allTechdegrees,
     activeTechdegree,
-    setActiveProjectIndex,
     activeProject,
     setActiveProject,
   } = useContext(AppState);
+  const { allTechdegrees } = useProjectDataContext();
 
   const [openDropdown, setOpenDropdown] = useState(false);
 
   // Created a helper function for readability
   const resetProjectState = () => {
     setShowProjects(false);
-    setActiveProjectIndex(null);
     setActiveProject(null);
   };
 

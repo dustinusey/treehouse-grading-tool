@@ -10,37 +10,26 @@ import {
 } from "./ui/command";
 import { useCommandState } from "cmdk";
 import { AppState } from "../App";
+import { useTheme } from "../context/ThemeContext";
 
 const CommandMenu = ({ copyToClipboard }) => {
   const {
-    setDarkMode,
     allProjects,
     allTechdegrees,
     setActiveTechdegree,
     activeProject,
     setActiveProject,
-    setAnsweredCount,
-    setActiveProjectIndex,
-    setActiveProjectQuestions,
-    setGradedCorrect,
-    setGradedQuestioned,
-    setGradedWrong,
+    setGradedRequirements,
   } = useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
   const [search, setSearch] = useState("");
   const page = pages[pages.length - 1];
-
-  console.log("this is being rendered");
+  const { toggleTheme } = useTheme()
 
   const resetProjectState = () => {
-    setAnsweredCount(0);
     setActiveProject(null);
-    setActiveProjectIndex(null);
-    setActiveProjectQuestions(null);
-    setGradedCorrect([]);
-    setGradedQuestioned([]);
-    setGradedWrong([]);
+    setGradedRequirements([]);
   };
 
   useEffect(() => {
@@ -83,7 +72,7 @@ const CommandMenu = ({ copyToClipboard }) => {
           setOpen(false);
         }
       }
-      if ((e.metaKey || e.ctrlKey) && e.code === "KeyC") {
+      if ((e.ctrlKey) && e.code === "KeyC") {
         e.preventDefault();
         copyToClipboard();
       }
@@ -160,7 +149,8 @@ const CommandMenu = ({ copyToClipboard }) => {
 
                 <CommandItem
                   onSelect={() => {
-                    setDarkMode((prevState) => !prevState);
+                    toggleTheme();
+                    setOpen(false);
                   }}
                 >
                   Toggle Dark/Light mode

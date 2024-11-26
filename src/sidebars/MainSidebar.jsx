@@ -3,6 +3,7 @@ import { FiSun } from "react-icons/fi";
 import { IoChevronBack, IoChevronForwardOutline } from "react-icons/io5";
 import { LuMoonStar } from "react-icons/lu";
 import { AppState } from "../App";
+import { useTheme } from "../context/ThemeContext";
 
 import ProjectList from "../components/dropdowns/ProjectList";
 
@@ -10,12 +11,14 @@ import LinksDropdown from "../components/dropdowns/links/LinksDropdown";
 import ProjectMediaDropdown from "../components/dropdowns/project-media/ProjectMediaDropdown";
 import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDropdown";
 
-const MainSidebar = ({ darkMode, setDarkMode }) => {
+const MainSidebar = () => {
   const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
 
   const { activeProject, setActiveTechdegree, activeTechdegree } =
     useContext(AppState);
+
+  const { darkMode, toggleTheme } = useTheme()
 
   const handleSidebarToggles = (e) => {
     if ((e.metaKey || e.ctrlKey) && e.code === "KeyB") {
@@ -78,7 +81,7 @@ const MainSidebar = ({ darkMode, setDarkMode }) => {
       )}
       <div
         onClick={() => {
-          setDarkMode(!darkMode);
+          toggleTheme()
         }}
         className={`${
           !mainSidebarOpen

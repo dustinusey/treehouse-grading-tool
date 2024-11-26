@@ -3,6 +3,7 @@ import { AppState } from "../App";
 import GradingButtons from "./GradingButtons";
 import Notes from "./Notes";
 import { memo } from 'react';
+import { cn } from "../utils";
 
 const MemoizedNotes = memo(Notes);
 
@@ -75,13 +76,11 @@ const Requirement = ({ req, index }) => {
                   }
                     : {}
                 }
-                className={`absolute top-1/2 left-[10px] -translate-x-1/2 -translate-y-1/2 mr-5 w-[5px] min-w-[5px] h-[100%] block rounded-xl duration-200 ${
-                  grade === "questioned"
-                    ? "bg-orange-400 dark:bg-orange-300"
-                    : grade === "wrong"
-                      ? "bg-red-400"
-                      : ""
-                }`}
+                className={cn(
+                  'absolute top-1/2 left-[10px] -translate-x-1/2 -translate-y-1/2 mr-5 w-[5px] min-w-[5px] h-[100%] block rounded-xl duration-200',
+                  grade === 'questioned' ? 'bg-orange-400 dark:bg-orange-300' : '',
+                  grade === 'needs' ? 'bg-red-400' : ''
+                )}
               ></span>
             )}
             <div className={`${graded && "ml-10"} duration-200 w-full`}>
