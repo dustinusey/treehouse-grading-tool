@@ -50,10 +50,17 @@ const CommandMenu = ({ copyToClipboard }) => {
         setPages([]);
         setOpen((open) => !open);
       }
-      if (e.key === "Escape" || (e.key === "Backspace" && !search)) {
+
+      if (open && e.key === "Backspace" && !search && pages.length > 0) {
         e.preventDefault();
         setPages((pages) => pages.slice(0, -1));
       }
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setPages((pages) => pages.slice(0, -1));
+      }
+
       if ((e.metaKey || e.ctrlKey) && e.code === "KeyP") {
         e.preventDefault();
         if (!open) {
@@ -83,7 +90,7 @@ const CommandMenu = ({ copyToClipboard }) => {
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
-  }, [open, pages]);
+  }, [open, pages, search]);
 
   const SubItem = (props) => {
     const search = useCommandState((state) => state.search);
