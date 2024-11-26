@@ -13,13 +13,12 @@ import TechdegreeDropdown from "../components/dropdowns/techdegrees/TechdegreeDr
 const MainSidebar = ({ darkMode, setDarkMode }) => {
   const [mainSidebarOpen, setMainSidebarOpen] = useState(true);
   const [showProjects, setShowProjects] = useState(false);
-  const [selectedProject, setSelectedProject] = useState(null);
 
   const { activeProject, setActiveTechdegree, activeTechdegree } =
     useContext(AppState);
 
-  const handleSidebarToggles = (event) => {
-    if (event.altKey && event.code === "KeyE") {
+  const handleSidebarToggles = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.code === "KeyB") {
       setMainSidebarOpen(!mainSidebarOpen);
     }
   };
@@ -70,14 +69,11 @@ const MainSidebar = ({ darkMode, setDarkMode }) => {
           <TechdegreeDropdown setShowProjects={setShowProjects} />
 
           {showProjects && activeTechdegree && (
-            <ProjectList
-              setShowProjects={setShowProjects}
-              setSelectedProject={setSelectedProject}
-            />
+            <ProjectList setShowProjects={setShowProjects} />
           )}
 
           <LinksDropdown />
-          <ProjectMediaDropdown selectedProject={selectedProject} />
+          <ProjectMediaDropdown />
         </div>
       )}
       <div

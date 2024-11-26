@@ -8,6 +8,7 @@ import ReviewItemsQuestioned from "../components/review-items/ReviewItemsQuestio
 import ReviewItemsWrong from "../components/review-items/ReviewItemsWrong";
 
 import { useContext } from "react";
+import CommandMenu from "../components/CommandMenu";
 
 const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
   const [isOpen, setIsOpen] = useState(isSidebarOpen);
@@ -19,9 +20,11 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
     gradedWrong,
     finalGradingReview,
     activeTechdegree,
+    activeProject,
   } = useContext(AppState);
 
   const copyToClipboard = async () => {
+    generateFinalReview();
     if (!finalGradingReview || !finalGradingReview.current) {
       console.error("No data to copy");
       return;
@@ -47,8 +50,8 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
   };
 
   // Here for handling OPT / ALT + R shortcut
-  const handleSidebarToggles = (event) => {
-    if (event.altKey && event.code === "KeyR") {
+  const handleSidebarToggles = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.code === "KeyR") {
       toggleSidebar();
     }
   };
@@ -67,6 +70,7 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
         isOpen && "min-w-[450px] w-[450px]"
       } px-5 text-white duration-200`}
     >
+      <CommandMenu copyToClipboard={copyToClipboard} />
       <div className="flex items-center justify-between h-[50px]">
         {isOpen && <p className="font-bold text-xl mr-5">Grading Review</p>}
         <button
@@ -93,27 +97,19 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
                   // resets review on "copy review" click
                   finalGradingReview.current = "";
 
-                  // correct
-                  const correct = gradedCorrect.filter(
-                    (item) => !item.isExceeds
-                  );
-                  const correctAndExceeds = gradedCorrect.filter(
-                    (item) => item.isExceeds
-                  );
+    // correct
+    const correct = gradedCorrect.filter((item) => !item.isExceeds);
+    const correctAndExceeds = gradedCorrect.filter((item) => item.isExceeds);
 
-                  // questioned
-                  const questioned = gradedQuestioned.filter(
-                    (item) => !item.isExceeds
-                  );
-                  const questionedAndExceeds = gradedQuestioned.filter(
-                    (item) => item.isExceeds
-                  );
+    // questioned
+    const questioned = gradedQuestioned.filter((item) => !item.isExceeds);
+    const questionedAndExceeds = gradedQuestioned.filter(
+      (item) => item.isExceeds,
+    );
 
-                  // wrong
-                  const wrong = gradedWrong.filter((item) => !item.isExceeds);
-                  const wrongAndExceeds = gradedWrong.filter(
-                    (item) => item.isExceeds
-                  );
+    // wrong
+    const wrong = gradedWrong.filter((item) => !item.isExceeds);
+    const wrongAndExceeds = gradedWrong.filter((item) => item.isExceeds);
 
                   // Correct Output
                   if (correct.length || correctAndExceeds.length) {
@@ -194,7 +190,13 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
                   }, 2500);
                 }}
                 style={
-                  copied ? { backgroundColor: activeTechdegree.color } : {}
+                  copied
+                    ? {
+                        backgroundColor:
+                          activeTechdegree.color ||
+                          activeProject.techdegree.color,
+                      }
+                    : {}
                 }
                 className="w-full p-4 text-center bg-zinc-700 rounded-lg hover:bg-zinc-600 duration-200"
               >

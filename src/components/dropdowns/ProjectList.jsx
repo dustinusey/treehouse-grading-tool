@@ -4,7 +4,11 @@ import { AppState } from "../../App";
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 
-const ProjectList = ({ setShowProjects, setSelectedProject }) => {
+export async function getActiveProjectData(project, setActiveProjectQuestions) {
+  setActiveProjectQuestions(project.gradingSections);
+}
+
+const ProjectList = ({ setShowProjects }) => {
   const {
     activeProjectIndex,
     setActiveProjectIndex,
@@ -19,10 +23,6 @@ const ProjectList = ({ setShowProjects, setSelectedProject }) => {
     setAnsweredCount,
   } = useContext(AppState);
 
-  async function getActiveProjectData(project) {
-    setActiveProjectQuestions(project.gradingSections);
-  }
-
   // Created a helper function for readability
   const resetProjectState = () => {
     setAnsweredCount(0);
@@ -36,7 +36,7 @@ const ProjectList = ({ setShowProjects, setSelectedProject }) => {
 
   useEffect(() => {
     if (activeProject) {
-      getActiveProjectData(activeProject);
+      getActiveProjectData(activeProject, setActiveProjectQuestions);
     }
   }, [activeProject]);
 
@@ -70,7 +70,6 @@ const ProjectList = ({ setShowProjects, setSelectedProject }) => {
                 resetProjectState();
                 setActiveProjectIndex(index);
                 setActiveProject(project);
-                setSelectedProject(project);
               }}
             >
               <div className="text-2xl">

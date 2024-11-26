@@ -2,9 +2,12 @@ import { useContext, useState } from "react";
 import { AppState } from "../App";
 import GradingButtons from "./GradingButtons";
 import Notes from "./Notes";
+import { memo } from 'react';
+
+const MemoizedNotes = memo(Notes);
 
 const Requirement = ({ req, index }) => {
-  const { activeTechdegree, excludeExceeds } = useContext(AppState);
+  const { activeTechdegree, excludeExceeds, activeProject } = useContext(AppState);
 
   const [graded, setGraded] = useState(false);
   const [grade, setGrade] = useState(null);
@@ -42,7 +45,7 @@ const Requirement = ({ req, index }) => {
                 {req.isExceeds && "EXCEEDS"}
               </p>
               <p className="text-lg mb-3">{req.title}</p>
-              {showNotes && <Notes req={req} />}
+              {showNotes && <MemoizedNotes req={req} />}
               <GradingButtons
                 req={req}
                 graded={graded}
@@ -66,15 +69,18 @@ const Requirement = ({ req, index }) => {
               <span
                 style={
                   graded && grade === "correct"
-                    ? { backgroundColor: activeTechdegree.color }
+                    ? {
+                    backgroundColor:
+                      activeTechdegree?.color || activeProject.techdegree.color,
+                  }
                     : {}
                 }
                 className={`absolute top-1/2 left-[10px] -translate-x-1/2 -translate-y-1/2 mr-5 w-[5px] min-w-[5px] h-[100%] block rounded-xl duration-200 ${
                   grade === "questioned"
                     ? "bg-orange-400 dark:bg-orange-300"
                     : grade === "wrong"
-                    ? "bg-red-400"
-                    : ""
+                      ? "bg-red-400"
+                      : ""
                 }`}
               ></span>
             )}
@@ -83,7 +89,7 @@ const Requirement = ({ req, index }) => {
                 {req.isExceeds && "EXCEEDS"}
               </p>
               <p className="text-lg mb-3">{req.title}</p>
-              {showNotes && <Notes req={req} />}
+              {showNotes && <MemoizedNotes req={req} />}
               <GradingButtons
                 req={req}
                 graded={graded}

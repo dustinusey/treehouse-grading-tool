@@ -1,18 +1,23 @@
 import { useContext, useEffect, useState } from "react";
 import { AppState } from "../App";
 import GradingSection from "./GradingSection";
+import { getActiveProjectData } from "./dropdowns/ProjectList";
 
 const ProjectRequirements = () => {
-  const { activeProjectQuestions } = useContext(AppState);
+  const { activeProject, activeProjectQuestions, setActiveProjectQuestions } =
+    useContext(AppState);
 
   const [sections, setSections] = useState([]);
 
   useEffect(() => {
     setSections([]);
-    activeProjectQuestions &&
+    if (activeProjectQuestions) {
       activeProjectQuestions.map((question) => {
         setSections((prev) => [...prev, question]);
       });
+    } else {
+      getActiveProjectData(activeProject, setActiveProjectQuestions);
+    }
   }, [activeProjectQuestions]);
 
   return (
