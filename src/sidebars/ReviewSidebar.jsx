@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FaListCheck } from "react-icons/fa6";
 import { IoCloseSharp } from "react-icons/io5";
 import { AppState } from "../App";
@@ -11,10 +11,10 @@ import CommandMenu from "../components/CommandMenu";
 const ReviewSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const finalGradingReview = useRef("");
 
   const {
     gradedRequirements,
-    finalGradingReview,
     activeTechdegree,
     activeProject,
   } = useContext(AppState);

@@ -21,7 +21,6 @@ const App = () => {
   const [activeOverlay, setActiveOverlay] = useState(false);
   // graded requirements
   const [gradedRequirements, setGradedRequirements] = useState([])
-  const finalGradingReview = useRef("");
   const [excludeExceeds, setExcludeExceeds] = useState(false);
 
   console.log(activeProject)
@@ -110,7 +109,6 @@ const App = () => {
         // grading requirements
         gradedRequirements,
         setGradedRequirements,
-        finalGradingReview,
         excludeExceeds,
         setExcludeExceeds,
       }}
