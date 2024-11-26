@@ -7,8 +7,9 @@ import { LuEye } from "react-icons/lu";
 import { SiReaddotcv } from "react-icons/si";
 import { AppState } from "../../../App";
 
-const ProjectMediaDropdown = ({ selectedProject }) => {
-  const { setCurrentMockup, setActiveOverlay } = useContext(AppState);
+const ProjectMediaDropdown = () => {
+  const { setCurrentMockup, setActiveOverlay, activeProject } =
+    useContext(AppState);
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [copyToClipboardAnimation, setCopyToClipboardAnimation] =
@@ -16,7 +17,7 @@ const ProjectMediaDropdown = ({ selectedProject }) => {
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(selectedProject.studyGuide);
+      await navigator.clipboard.writeText(activeProject.studyGuide);
       setCopyToClipboardAnimation(true);
       setTimeout(() => {
         setCopyToClipboardAnimation(false);
@@ -28,8 +29,8 @@ const ProjectMediaDropdown = ({ selectedProject }) => {
 
   // Convert mockups to an array
   let mockupArray;
-  if (selectedProject) {
-    mockupArray = Object.entries(selectedProject.mockups)
+  if (activeProject) {
+    mockupArray = Object.entries(activeProject.mockups)
       .map(([key, value]) => ({ type: key, mock: value })) // Convert to array of objects
       .filter((mockup) => mockup.mock !== null); // Only allow not-null values
   }
@@ -65,19 +66,17 @@ const ProjectMediaDropdown = ({ selectedProject }) => {
           openDropdown ? "h-auto" : "h-[0px]"
         } w-full overflow-hidden`}
       >
-        {!selectedProject && (
+        {!activeProject && (
           <li className="py-5 text-center">No project selected</li>
         )}
 
-        {selectedProject &&
-          !mockupArray.length &&
-          !selectedProject.studyGuide && (
-            <li className="py-5 text-center">
-              There is no media for this project
-            </li>
-          )}
+        {activeProject && !mockupArray.length && !activeProject.studyGuide && (
+          <li className="py-5 text-center">
+            There is no media for this project
+          </li>
+        )}
 
-        {selectedProject && mockupArray.length ? (
+        {activeProject && mockupArray.length ? (
           mockupArray.map((mockup, index) => {
             return (
               <li
@@ -106,7 +105,7 @@ const ProjectMediaDropdown = ({ selectedProject }) => {
           <></>
         )}
 
-        {selectedProject?.studyGuide && (
+        {activeProject?.studyGuide && (
           <li className="py-3 pl-[28px] pr-[258px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200">
             <div className="w-[30px] mr-5 text-2xl">
               <SiReaddotcv />
@@ -115,7 +114,7 @@ const ProjectMediaDropdown = ({ selectedProject }) => {
             <div className="mr-5 min-w-[185px] w-[185px]">
               <p>Study Guide</p>
               <p className="text-xs text-zinc-500 shorten1">
-                {selectedProject.studyGuide}
+                {activeProject.studyGuide}
               </p>
             </div>
 
@@ -131,7 +130,7 @@ const ProjectMediaDropdown = ({ selectedProject }) => {
               <a
                 className="text-[20px]"
                 target="_blank"
-                href={selectedProject.studyGuide}
+                href={activeProject.studyGuide}
                 title="open link in new window"
                 rel="noopener noreferrer" // Added for security when using target="_blank"
               >

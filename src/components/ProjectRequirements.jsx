@@ -11,14 +11,12 @@ const ProjectRequirements = () => {
 
   useEffect(() => {
     setSections([]);
-    if (activeProjectQuestions !== null) {
+    if (activeProjectQuestions) {
       activeProjectQuestions.map((question) => {
         setSections((prev) => [...prev, question]);
       });
     } else {
-      getActiveProjectData(activeProject._id).then((data) =>
-        setActiveProjectQuestions(data.data.result.gradingSections),
-      );
+      getActiveProjectData(activeProject, setActiveProjectQuestions);
     }
   }, [activeProjectQuestions]);
 

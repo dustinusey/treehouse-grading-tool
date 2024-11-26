@@ -16,8 +16,15 @@ const CommandMenu = ({ copyToClipboard }) => {
     setDarkMode,
     allProjects,
     allTechdegrees,
+    setActiveTechdegree,
     activeProject,
     setActiveProject,
+    setAnsweredCount,
+    setActiveProjectIndex,
+    setActiveProjectQuestions,
+    setGradedCorrect,
+    setGradedQuestioned,
+    setGradedWrong,
   } = useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
@@ -25,6 +32,16 @@ const CommandMenu = ({ copyToClipboard }) => {
   const page = pages[pages.length - 1];
 
   console.log("this is being rendered");
+
+  const resetProjectState = () => {
+    setAnsweredCount(0);
+    setActiveProject(null);
+    setActiveProjectIndex(null);
+    setActiveProjectQuestions(null);
+    setGradedCorrect([]);
+    setGradedQuestioned([]);
+    setGradedWrong([]);
+  };
 
   useEffect(() => {
     const down = (e) => {
@@ -152,7 +169,11 @@ const CommandMenu = ({ copyToClipboard }) => {
                   <SubItem
                     key={proj._id}
                     onSelect={() => {
+                      resetProjectState();
                       setActiveProject(proj);
+                      setActiveTechdegree(
+                        allTechdegrees.find((t) => t.name === proj.tdName)
+                      );
                       setOpen(false);
                       setSearch("");
                     }}
@@ -175,7 +196,11 @@ const CommandMenu = ({ copyToClipboard }) => {
                   <CommandItem
                     key={proj._id}
                     onSelect={() => {
+                      resetProjectState();
                       setActiveProject(proj);
+                      setActiveTechdegree(
+                        allTechdegrees.find((t) => t.name === proj.tdName)
+                      );
                       setOpen(false);
                       setSearch("");
                     }}
@@ -190,16 +215,20 @@ const CommandMenu = ({ copyToClipboard }) => {
             <>
               {allProjects
                 ?.filter((proj) => {
-                  const td = allTechdegrees.find(t => t.name === proj.tdName)
-                  return td?.abbr === page.split("-")[0]
+                  const td = allTechdegrees.find((t) => t.name === proj.tdName);
+                  return td?.name === page.split("-")[0];
                 })
                 .map((proj) => (
                   <CommandItem
                     key={proj._id}
                     onSelect={() => {
-                      setActiveProject(proj)
-                      setOpen(false)
-                      setSearch('')
+                      resetProjectState();
+                      setActiveProject(proj);
+                      setActiveTechdegree(
+                        allTechdegrees.find((t) => t.name === proj.tdName)
+                      );
+                      setOpen(false);
+                      setSearch("");
                     }}
                   >
                     {proj.tdName} - {proj.projectNumber} : {proj.title}
@@ -212,9 +241,9 @@ const CommandMenu = ({ copyToClipboard }) => {
             <CommandGroup heading="Techdegrees">
               {allTechdegrees.map((td) => (
                 <CommandItem
-                  key={td.abbr}
+                  key={td._id}
                   onSelect={() => {
-                    setPages([...pages, `${td.abbr}-projects`]);
+                    setPages([...pages, `${td.name}-projects`]);
                     setSearch("");
                   }}
                 >

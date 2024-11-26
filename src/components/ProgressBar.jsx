@@ -14,9 +14,7 @@ const ProgressBar = () => {
     <div className="h-[3px] w-full mx-auto bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden duration-200">
       <div
         style={{
-
-          backgroundColor:
-            activeTechdegree?.color || activeProject.techdegree.color,
+          backgroundColor: activeTechdegree?.color,
           width: `${width}%`,
         }}
         className="h-full rounded-full duration-1000"
