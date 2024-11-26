@@ -2,6 +2,9 @@ import { useContext, useState } from "react";
 import { AppState } from "../App";
 import GradingButtons from "./GradingButtons";
 import Notes from "./Notes";
+import { memo } from 'react';
+
+const MemoizedNotes = memo(Notes);
 
 const Requirement = ({ req, index }) => {
   const { activeTechdegree, excludeExceeds, activeProject } = useContext(AppState);
@@ -42,7 +45,7 @@ const Requirement = ({ req, index }) => {
                 {req.isExceeds && "EXCEEDS"}
               </p>
               <p className="text-lg mb-3">{req.title}</p>
-              {showNotes && <Notes req={req} />}
+              {showNotes && <MemoizedNotes req={req} />}
               <GradingButtons
                 req={req}
                 graded={graded}
@@ -86,7 +89,7 @@ const Requirement = ({ req, index }) => {
                 {req.isExceeds && "EXCEEDS"}
               </p>
               <p className="text-lg mb-3">{req.title}</p>
-              {showNotes && <Notes req={req} />}
+              {showNotes && <MemoizedNotes req={req} />}
               <GradingButtons
                 req={req}
                 graded={graded}
