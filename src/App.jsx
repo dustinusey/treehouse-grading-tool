@@ -6,11 +6,9 @@ import ViewContainer from "./views/ViewContainer";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ProjectDataProvider } from "./context/ProjectDataContext";
 
-// app state
 export const AppState = createContext();
 
 const App = () => {
-  // Only keep active states in AppState
   const [activeTechdegree, setActiveTechdegree] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
   const [activeOverlay, setActiveOverlay] = useState(false);
