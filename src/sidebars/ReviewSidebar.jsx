@@ -32,9 +32,6 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
       setTimeout(() => {
         window.location.reload();
       }, 2500);
-      setTimeout(() => {
-        window.location.reload();
-      }, 2500);
     } catch (error) {
       console.error("Failed to copy: ", error);
     }
@@ -92,10 +89,10 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
     }
 
     if (questioned.length) {
-      finalGradingReview.current += '\n'
+      finalGradingReview.current += '\n\n'
       questioned.forEach(r => {
         finalGradingReview.current += `:questioned:${r.isExceeds ? ':exceeds: ' : ''}${r.title}\n`
-        if (r.notes) finalGradingReview.current += `> ${r.notes}\n`
+        if (r.notes) finalGradingReview.current += `> ${r.notes}\n\n`
       })
     }
 
@@ -103,7 +100,7 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
       finalGradingReview.current += '\n'
       needs.forEach(r => {
         finalGradingReview.current += `:needs-work:${r.isExceeds ? ':exceeds: ' : ''}${r.title}\n`
-        if (r.notes) finalGradingReview.current += `> ${r.notes}\n`
+        if (r.notes) finalGradingReview.current += `> ${r.notes}\n\n`
       })
     }
   };
