@@ -32,6 +32,9 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
       setTimeout(() => {
         window.location.reload();
       }, 2500);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2500);
     } catch (error) {
       console.error("Failed to copy: ", error);
     }
@@ -133,9 +136,6 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
                   setCopied(true);
                   // copy contents of setfinalgradingreview to clipboard as text
                   copyToClipboard();
-                  setTimeout(() => {
-                    window.location.reload();
-                  }, 2500);
                 }}
                 style={
                   copied
