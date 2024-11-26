@@ -6,12 +6,11 @@ import { FaCheck, FaQuestion } from "react-icons/fa6";
 import { IoClose } from "react-icons/io5";
 
 const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
-  const { setGradedRequirements, setAnsweredCount } = useContext(AppState)
+  const { setGradedRequirements } = useContext(AppState)
 
   const buttonStyles = 'size-[50px] rounded-xl border-2 border-zinc-200 dark:border-zinc-900 grid place-items-center bg-white hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-600 duration-200 cursor-pointer'
 
   function handleGrade(grade) {
-    setAnsweredCount(prev => prev + 1)
     setGraded(true)
     if (grade !== 'correct') setShowNotes(true)
     setGrade(grade)
@@ -34,7 +33,6 @@ const GradingButtons = ({ req, graded, setGraded, setGrade, setShowNotes }) => {
   }
 
   function handleReset() {
-    setAnsweredCount(prev => prev - 1)
     setGraded(false)
     setGrade(null)
     setShowNotes(false)

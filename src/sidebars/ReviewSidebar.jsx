@@ -8,8 +8,8 @@ import ReviewItems from "../components/review-items/ReviewItems";
 import { useContext } from "react";
 import CommandMenu from "../components/CommandMenu";
 
-const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
-  const [isOpen, setIsOpen] = useState(isSidebarOpen);
+const ReviewSidebar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const {
@@ -18,6 +18,13 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
     activeTechdegree,
     activeProject,
   } = useContext(AppState);
+
+  const getTotalRequirements = () => {
+    if (!activeProject?.gradingSections) return 0;
+    return activeProject.gradingSections.reduce((total, section) => {
+      return total + section.requirements.length;
+    }, 0);
+  };
 
   const copyToClipboard = async () => {
     generateFinalReview();
@@ -37,18 +44,12 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
     }
   };
 
-  // Here to handle the external change in App.jsx where if the grading is done, the sidebar opens
-  useEffect(() => {
-    setIsOpen(isSidebarOpen);
-  }, [isSidebarOpen]);
-
   const toggleSidebar = () => {
     const newOpenState = !isOpen;
     setIsOpen(newOpenState);
-    onSidebarToggle(newOpenState); // Notify App.jsx about the new state
   };
 
-  // Here for handling OPT / ALT + R shortcut
+  // Here for handling CTRL + R shortcut
   const handleSidebarToggles = (e) => {
     if ((e.metaKey || e.ctrlKey) && e.code === "KeyR") {
       toggleSidebar();
@@ -62,6 +63,13 @@ const ReviewSidebar = ({ isSidebarOpen, onSidebarToggle }) => {
       window.removeEventListener("keydown", handleSidebarToggles);
     };
   }, [handleSidebarToggles]);
+
+  useEffect(() => {
+    const totalRequirements = getTotalRequirements();
+    if (activeProject&& gradedRequirements.length === totalRequirements) {
+      setIsOpen(true);
+    }
+  }, [gradedRequirements, activeProject]);
 
   const generateFinalReview = () => {
     finalGradingReview.current = ''

@@ -11,7 +11,6 @@ import { ThemeProvider } from "./context/ThemeContext";
 export const AppState = createContext();
 
 const App = () => {
-  const [reviewSidebarOpen, setReviewSidebarOpen] = useState(false);
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
   const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
@@ -28,32 +27,8 @@ const App = () => {
   const [gradedRequirements, setGradedRequirements] = useState([])
   const finalGradingReview = useRef("");
   const [excludeExceeds, setExcludeExceeds] = useState(false);
-  // progress bar
-  const allQuestions = useRef([]);
-  const [answeredCount, setAnsweredCount] = useState(0);
-  // getting all current projects questions
-  useEffect(() => {
-    allQuestions.current = [];
-    activeProjectQuestions &&
-      activeProjectQuestions.forEach((question) => {
-        question.requirements.forEach((requirement) => {
-          allQuestions.current.push(requirement);
-        });
-      });
-  }, [activeProjectQuestions]);
 
-  // toggles grading review sidebar
-  const handleSidebarToggle = (isOpen) => {
-    setReviewSidebarOpen(isOpen);
-  };
-
-  // toggles grading review sidebar and main sidebar upon completion of grading
-  useEffect(() => {
-    if ((answeredCount / allQuestions.current.length) * 100 >= 100) {
-      setReviewSidebarOpen(true);
-    }
-  }, [answeredCount]);
-
+  console.log(activeProject)
   // Fetch all TD dat  console.log(techdegrees);a in one call and set allTD / allProject states
   useEffect(() => {
     async function fetchAllData() {
@@ -149,20 +124,13 @@ const App = () => {
         finalGradingReview,
         excludeExceeds,
         setExcludeExceeds,
-        // progress bar
-        allQuestions,
-        answeredCount,
-        setAnsweredCount,
       }}
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">
         {activeOverlay && <Overlay />}
         <MainSidebar />
         <ViewContainer />
-        <ReviewSidebar
-          isSidebarOpen={reviewSidebarOpen}
-          onSidebarToggle={handleSidebarToggle}
-        />
+        <ReviewSidebar />
       </div>
     </AppState.Provider>
     </ThemeProvider>

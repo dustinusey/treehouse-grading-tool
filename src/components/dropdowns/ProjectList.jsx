@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AppState } from "../../App";
 
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
@@ -16,25 +16,15 @@ const ProjectList = ({ setShowProjects }) => {
     setActiveTechdegree,
     activeProject,
     setActiveProject,
-    setActiveProjectQuestions,
     setGradedRequirements,
-    setAnsweredCount,
   } = useContext(AppState);
 
   // Created a helper function for readability
   const resetProjectState = () => {
-    setAnsweredCount(0);
     setActiveProject(null);
     setActiveProjectIndex(null);
-    setActiveProjectQuestions(null);
     setGradedRequirements([]);
   };
-
-  useEffect(() => {
-    if (activeProject) {
-      getActiveProjectData(activeProject, setActiveProjectQuestions);
-    }
-  }, [activeProject]);
 
   return (
     <div>
