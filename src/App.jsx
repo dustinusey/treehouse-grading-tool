@@ -29,9 +29,6 @@ const App = () => {
   const [currentMockup, setCurrentMockup] = useState(null);
   const [activeOverlay, setActiveOverlay] = useState(false);
   // graded requirements
-  const [gradedCorrect, setGradedCorrect] = useState([]);
-  const [gradedQuestioned, setGradedQuestioned] = useState([]);
-  const [gradedWrong, setGradedWrong] = useState([]);
   const [gradedRequirements, setGradedRequirements] = useState([])
   const finalGradingReview = useRef("");
   const [excludeExceeds, setExcludeExceeds] = useState(false);
@@ -162,12 +159,6 @@ const App = () => {
         currentMockup,
         setCurrentMockup,
         // grading requirements
-        gradedCorrect,
-        setGradedCorrect,
-        gradedQuestioned,
-        setGradedQuestioned,
-        gradedWrong,
-        setGradedWrong,
         gradedRequirements,
         setGradedRequirements,
         finalGradingReview,

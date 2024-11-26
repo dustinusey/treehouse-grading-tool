@@ -17,9 +17,7 @@ const ProjectList = ({ setShowProjects }) => {
     activeProject,
     setActiveProject,
     setActiveProjectQuestions,
-    setGradedCorrect,
-    setGradedQuestioned,
-    setGradedWrong,
+    setGradedRequirements,
     setAnsweredCount,
   } = useContext(AppState);
 
@@ -29,9 +27,7 @@ const ProjectList = ({ setShowProjects }) => {
     setActiveProject(null);
     setActiveProjectIndex(null);
     setActiveProjectQuestions(null);
-    setGradedCorrect([]);
-    setGradedQuestioned([]);
-    setGradedWrong([]);
+    setGradedRequirements([]);
   };
 
   useEffect(() => {

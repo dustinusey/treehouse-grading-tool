@@ -22,9 +22,7 @@ const CommandMenu = ({ copyToClipboard }) => {
     setAnsweredCount,
     setActiveProjectIndex,
     setActiveProjectQuestions,
-    setGradedCorrect,
-    setGradedQuestioned,
-    setGradedWrong,
+    setGradedRequirements,
   } = useContext(AppState);
   const [open, setOpen] = useState(false);
   const [pages, setPages] = useState([]);
@@ -36,9 +34,7 @@ const CommandMenu = ({ copyToClipboard }) => {
     setActiveProject(null);
     setActiveProjectIndex(null);
     setActiveProjectQuestions(null);
-    setGradedCorrect([]);
-    setGradedQuestioned([]);
-    setGradedWrong([]);
+    setGradedRequirements([]);
   };
 
   useEffect(() => {
@@ -81,7 +77,7 @@ const CommandMenu = ({ copyToClipboard }) => {
           setOpen(false);
         }
       }
-      if (e.ctrlKey && e.code === "KeyC") {
+      if ((e.ctrlKey) && e.code === "KeyC") {
         e.preventDefault();
         copyToClipboard();
       }
