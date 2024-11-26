@@ -5,16 +5,12 @@ import Overlay from "./components/Overlay";
 import MainSidebar from "./sidebars/MainSidebar";
 import ReviewSidebar from "./sidebars/ReviewSidebar";
 import ViewContainer from "./views/ViewContainer";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // app state
 export const AppState = createContext();
 
 const App = () => {
-  // theme
-  const [darkMode, setDarkMode] = useState(() => {
-    const mode = localStorage.getItem("darkMode");
-    return mode === "true" ? true : false;
-  });
   const [reviewSidebarOpen, setReviewSidebarOpen] = useState(false);
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
@@ -57,16 +53,6 @@ const App = () => {
       setReviewSidebarOpen(true);
     }
   }, [answeredCount]);
-
-  // grabbing dark theme from localstorage
-  useEffect(() => {
-    localStorage.setItem("darkMode", darkMode.toString());
-    if (darkMode) {
-      document.body.classList.add("dark");
-    } else {
-      document.body.classList.remove("dark");
-    }
-  }, [darkMode]);
 
   // Fetch all TD dat  console.log(techdegrees);a in one call and set allTD / allProject states
   useEffect(() => {
@@ -136,14 +122,13 @@ const App = () => {
   }, []);
 
   return (
+    <ThemeProvider>
     <AppState.Provider
       value={{
         // techdgrees & loading
         allTechdegrees,
         activeTechdegree,
         setActiveTechdegree,
-        darkMode,
-        setDarkMode,
         // projects
         allProjects,
         activeProject,
@@ -172,7 +157,7 @@ const App = () => {
     >
       <div className="h-screen w-full overflow-hidden bg-zinc-800 py-5 flex ">
         {activeOverlay && <Overlay />}
-        <MainSidebar darkMode={darkMode} setDarkMode={setDarkMode} />
+        <MainSidebar />
         <ViewContainer />
         <ReviewSidebar
           isSidebarOpen={reviewSidebarOpen}
@@ -180,6 +165,7 @@ const App = () => {
         />
       </div>
     </AppState.Provider>
+    </ThemeProvider>
   );
 };
 export default App;

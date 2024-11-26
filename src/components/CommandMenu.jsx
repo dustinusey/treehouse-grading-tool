@@ -10,10 +10,9 @@ import {
 } from "./ui/command";
 import { useCommandState } from "cmdk";
 import { AppState } from "../App";
-
+import { useTheme } from "../context/ThemeContext";
 const CommandMenu = ({ copyToClipboard }) => {
   const {
-    setDarkMode,
     allProjects,
     allTechdegrees,
     setActiveTechdegree,
@@ -28,6 +27,7 @@ const CommandMenu = ({ copyToClipboard }) => {
   const [pages, setPages] = useState([]);
   const [search, setSearch] = useState("");
   const page = pages[pages.length - 1];
+  const { toggleTheme } = useTheme()
 
   const resetProjectState = () => {
     setAnsweredCount(0);
@@ -154,7 +154,8 @@ const CommandMenu = ({ copyToClipboard }) => {
 
                 <CommandItem
                   onSelect={() => {
-                    setDarkMode((prevState) => !prevState);
+                    toggleTheme();
+                    setOpen(false);
                   }}
                 >
                   Toggle Dark/Light mode
