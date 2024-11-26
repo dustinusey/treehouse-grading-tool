@@ -11,6 +11,7 @@ import {
 import { useCommandState } from "cmdk";
 import { AppState } from "../App";
 import { useTheme } from "../context/ThemeContext";
+
 const CommandMenu = ({ copyToClipboard }) => {
   const {
     allProjects,
@@ -18,9 +19,6 @@ const CommandMenu = ({ copyToClipboard }) => {
     setActiveTechdegree,
     activeProject,
     setActiveProject,
-    setAnsweredCount,
-    setActiveProjectIndex,
-    setActiveProjectQuestions,
     setGradedRequirements,
   } = useContext(AppState);
   const [open, setOpen] = useState(false);
@@ -30,10 +28,7 @@ const CommandMenu = ({ copyToClipboard }) => {
   const { toggleTheme } = useTheme()
 
   const resetProjectState = () => {
-    setAnsweredCount(0);
     setActiveProject(null);
-    setActiveProjectIndex(null);
-    setActiveProjectQuestions(null);
     setGradedRequirements([]);
   };
 

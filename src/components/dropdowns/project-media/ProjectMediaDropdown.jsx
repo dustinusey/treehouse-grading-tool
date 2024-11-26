@@ -8,12 +8,9 @@ import { SiReaddotcv } from "react-icons/si";
 import { AppState } from "../../../App";
 
 const ProjectMediaDropdown = () => {
-  const { setCurrentMockup, setActiveOverlay, activeProject } =
-    useContext(AppState);
-
+  const { setActiveOverlay, activeProject } = useContext(AppState);
   const [openDropdown, setOpenDropdown] = useState(false);
-  const [copyToClipboardAnimation, setCopyToClipboardAnimation] =
-    useState(false);
+  const [copyToClipboardAnimation, setCopyToClipboardAnimation] = useState(false);
 
   const copyToClipboard = async () => {
     try {
@@ -81,7 +78,6 @@ const ProjectMediaDropdown = () => {
             return (
               <li
                 onClick={() => {
-                  setCurrentMockup(mockup.mock);
                   setActiveOverlay(true);
                 }}
                 className="px-8 py-3 pl-[28px] flex items-center justify-start hover:bg-white hover:bg-opacity-10 last-of-type:pb-4 duration-200"

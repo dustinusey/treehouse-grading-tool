@@ -13,15 +13,11 @@ export const AppState = createContext();
 const App = () => {
   // techdegrees
   const [activeTechdegree, setActiveTechdegree] = useState(null);
-  const [allTechdegrees, setAllTechdegrees] = useState([]); // NEW FOR TESTING (TA)
+  const [allTechdegrees, setAllTechdegrees] = useState([]);
   // projects
-  const [allProjects, setAllProjects] = useState(null); // NEW FOR TESTING (TA)
+  const [allProjects, setAllProjects] = useState(null);
   const [activeProject, setActiveProject] = useState(null);
-  // active project list items in sidebar
-  const [activeProjectIndex, setActiveProjectIndex] = useState(null);
-  const [activeProjectQuestions, setActiveProjectQuestions] = useState(null);
   // project media
-  const [currentMockup, setCurrentMockup] = useState(null);
   const [activeOverlay, setActiveOverlay] = useState(false);
   // graded requirements
   const [gradedRequirements, setGradedRequirements] = useState([])
@@ -108,16 +104,9 @@ const App = () => {
         allProjects,
         activeProject,
         setActiveProject,
-        // active project list items
-        activeProjectIndex,
-        setActiveProjectIndex,
-        activeProjectQuestions,
-        setActiveProjectQuestions,
         // project media
         activeOverlay,
         setActiveOverlay,
-        currentMockup,
-        setCurrentMockup,
         // grading requirements
         gradedRequirements,
         setGradedRequirements,
