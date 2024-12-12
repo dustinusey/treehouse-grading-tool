@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { AppState } from "../../App";
 
 import { FaRegFolder, FaRegFolderOpen } from "react-icons/fa";
@@ -10,35 +10,17 @@ export async function getActiveProjectData(project, setActiveProjectQuestions) {
 
 const ProjectList = ({ setShowProjects }) => {
   const {
-    activeProjectIndex,
-    setActiveProjectIndex,
     activeTechdegree,
     setActiveTechdegree,
     activeProject,
     setActiveProject,
-    setActiveProjectQuestions,
-    setGradedCorrect,
-    setGradedQuestioned,
-    setGradedWrong,
-    setAnsweredCount,
+    setGradedRequirements,
   } = useContext(AppState);
 
-  // Created a helper function for readability
   const resetProjectState = () => {
-    setAnsweredCount(0);
     setActiveProject(null);
-    setActiveProjectIndex(null);
-    setActiveProjectQuestions(null);
-    setGradedCorrect([]);
-    setGradedQuestioned([]);
-    setGradedWrong([]);
+    setGradedRequirements([]);
   };
-
-  useEffect(() => {
-    if (activeProject) {
-      getActiveProjectData(activeProject, setActiveProjectQuestions);
-    }
-  }, [activeProject]);
 
   return (
     <div>
@@ -55,20 +37,17 @@ const ProjectList = ({ setShowProjects }) => {
             <IoClose />
           </button>
         </li>
-        {activeTechdegree.projects.map((project, index) => {
-          const isActive = index === activeProjectIndex;
+        {activeTechdegree.projects.map((project) => {
+          const isActive = activeProject?._id === project._id;
           const itemClassNames = `py-3 px-5 pr-1 flex items-center hover:bg-white hover:bg-opacity-10 rounded-xl cursor-pointer duration-200 ${
             isActive ? "bg-white bg-opacity-10" : ""
           }`;
           return (
             <li
-              className={`${
-                isActive && "pointer-events-none"
-              } ${itemClassNames}`}
-              key={index}
+              className={`${isActive && "pointer-events-none"} ${itemClassNames}`}
+              key={project._id}
               onClick={() => {
                 resetProjectState();
-                setActiveProjectIndex(index);
                 setActiveProject(project);
               }}
             >
